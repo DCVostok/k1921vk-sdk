@@ -208,7 +208,7 @@ __STATIC_INLINE void SPI_Cmd(FunctionalState State)
 {
     assert_param(IS_FUNCTIONAL_STATE(State));
 
-    WRITE_REG(SPI->CR1_bit.SSE, State);
+    WRITE_REG(SPI0->CR1_bit.SSE, State);
 }
 
 /**
@@ -220,7 +220,7 @@ __STATIC_INLINE void SPI_SlaveOutputDisCmd(FunctionalState State)
 {
     assert_param(IS_FUNCTIONAL_STATE(State));
 
-    WRITE_REG(SPI->CR1_bit.SOD, State);
+    WRITE_REG(SPI0->CR1_bit.SOD, State);
 }
 
 /**
@@ -234,7 +234,7 @@ __STATIC_INLINE void SPI_SCKConfig(SPI_SCKPhase_TypeDef SCKPhase, SPI_SCKPolarit
     assert_param(IS_SPI_SCK_PHASE(SCKPhase));
     assert_param(IS_SPI_SCK_POLARITY(SCKPolarity));
 
-    MODIFY_REG(SPI->CR0, SPI_CR0_SPH_Msk | SPI_CR0_SPO_Msk,
+    MODIFY_REG(SPI0->CR0, SPI_CR0_SPH_Msk | SPI_CR0_SPO_Msk,
                ((SCKPhase << SPI_CR0_SPH_Pos) |
                 (SCKPolarity << SPI_CR0_SPO_Pos)));
 }
@@ -248,7 +248,7 @@ __STATIC_INLINE void SPI_DataWidthConfig(SPI_DataWidth_TypeDef DataWidth)
 {
     assert_param(IS_SPI_DATA_WIDTH(DataWidth));
 
-    WRITE_REG(SPI->CR0_bit.DSS, DataWidth);
+    WRITE_REG(SPI0->CR0_bit.DSS, DataWidth);
 }
 
 /**
@@ -260,7 +260,7 @@ __STATIC_INLINE void SPI_ModeConfig(SPI_Mode_TypeDef Mode)
 {
     assert_param(IS_SPI_MODE(Mode));
 
-    WRITE_REG(SPI->CR1_bit.MS, Mode);
+    WRITE_REG(SPI0->CR1_bit.MS, Mode);
 }
 
 /**
@@ -272,7 +272,7 @@ __STATIC_INLINE void SPI_FrameFormatConfig(SPI_FrameFormat_TypeDef FrameFormat)
 {
     assert_param(IS_SPI_FRAME_FORMAT(FrameFormat));
 
-    WRITE_REG(SPI->CR0_bit.FRF, FrameFormat);
+    WRITE_REG(SPI0->CR0_bit.FRF, FrameFormat);
 }
 
 /**
@@ -290,8 +290,8 @@ __STATIC_INLINE void SPI_SCKDivConfig(uint32_t SCKDiv, uint32_t SCKDivExtra)
     assert_param(IS_SPI_SCK_DIV(SCKDiv));
     assert_param(IS_SPI_SCK_DIV_EXTRA(SCKDivExtra));
 
-    WRITE_REG(SPI->CR0_bit.SCR, SCKDiv);
-    WRITE_REG(SPI->CPSR, SCKDivExtra);
+    WRITE_REG(SPI0->CR0_bit.SCR, SCKDiv);
+    WRITE_REG(SPI0->CPSR, SCKDivExtra);
 }
 
 /** @defgroup SPI_Init_Deinit Инициализация и деинициализация
@@ -319,7 +319,7 @@ __STATIC_INLINE void SPI_SendData(uint32_t Data)
 {
     assert_param(IS_SPI_DATA(Data));
 
-    WRITE_REG(SPI->DR, Data);
+    WRITE_REG(SPI0->DR, Data);
 }
 
 /**
@@ -328,7 +328,7 @@ __STATIC_INLINE void SPI_SendData(uint32_t Data)
   */
 __STATIC_INLINE uint32_t SPI_RecieveData()
 {
-    return READ_REG(SPI->DR);
+    return READ_REG(SPI0->DR);
 }
 
 /**
@@ -342,7 +342,7 @@ __STATIC_INLINE FlagStatus SPI_FlagStatus(uint32_t Flag)
 {
     assert_param(IS_SPI_FLAG(Flag));
 
-    return (FlagStatus)READ_BIT(SPI->SR, Flag);
+    return (FlagStatus)READ_BIT(SPI0->SR, Flag);
 }
 
 /**
@@ -363,7 +363,7 @@ __STATIC_INLINE void SPI_ITFIFOLevelRxConfig(uint32_t FIFOLevelRx)
 {
     assert_param(IS_SPI_FIFO_LEVEL(FIFOLevelRx));
 
-    WRITE_REG(SPI->CR1_bit.RXIFLSEL, FIFOLevelRx);
+    WRITE_REG(SPI0->CR1_bit.RXIFLSEL, FIFOLevelRx);
 }
 
 /**
@@ -376,7 +376,7 @@ __STATIC_INLINE void SPI_ITFIFOLevelTxConfig(uint32_t FIFOLevelTx)
 {
     assert_param(IS_SPI_FIFO_LEVEL(FIFOLevelTx));
 
-    WRITE_REG(SPI->CR1_bit.TXIFLSEL, FIFOLevelTx);
+    WRITE_REG(SPI0->CR1_bit.TXIFLSEL, FIFOLevelTx);
 }
 
 /**
@@ -390,7 +390,7 @@ __STATIC_INLINE void SPI_ITCmd(uint32_t ITSource, FunctionalState State)
 {
     assert_param(IS_SPI_IT_SOURCE(ITSource));
 
-    MODIFY_REG(SPI->IMSC, ITSource, State ? ITSource : 0);
+    MODIFY_REG(SPI0->IMSC, ITSource, State ? ITSource : 0);
 }
 
 /**
@@ -404,7 +404,7 @@ __STATIC_INLINE FlagStatus SPI_ITRawStatus(uint32_t ITSource)
 {
     assert_param(IS_SPI_IT_SOURCE(ITSource));
 
-    return (FlagStatus)READ_BIT(SPI->RIS, ITSource);
+    return (FlagStatus)READ_BIT(SPI0->RIS, ITSource);
 }
 
 /**
@@ -418,7 +418,7 @@ __STATIC_INLINE FlagStatus SPI_ITMaskedStatus(uint32_t ITSource)
 {
     assert_param(IS_SPI_IT_SOURCE(ITSource));
 
-    return (FlagStatus)READ_BIT(SPI->MIS, ITSource);
+    return (FlagStatus)READ_BIT(SPI0->MIS, ITSource);
 }
 
 /**
@@ -431,7 +431,7 @@ __STATIC_INLINE void SPI_ITStatusClear(uint32_t ITSource)
 {
     assert_param(IS_SPI_IT_SOURCE(ITSource));
 
-    WRITE_REG(SPI->ICR, ITSource);
+    WRITE_REG(SPI0->ICR, ITSource);
 }
 
 /**
@@ -451,7 +451,7 @@ __STATIC_INLINE void SPI_DMARxCmd(FunctionalState State)
 {
     assert_param(IS_FUNCTIONAL_STATE(State));
 
-    WRITE_REG(SPI->DMACR_bit.RXDMAE, State);
+    WRITE_REG(SPI0->DMACR_bit.RXDMAE, State);
 }
 
 /**
@@ -463,7 +463,7 @@ __STATIC_INLINE void SPI_DMATxCmd(FunctionalState State)
 {
     assert_param(IS_FUNCTIONAL_STATE(State));
 
-    WRITE_REG(SPI->DMACR_bit.TXDMAE, State);
+    WRITE_REG(SPI0->DMACR_bit.TXDMAE, State);
 }
 
 /**

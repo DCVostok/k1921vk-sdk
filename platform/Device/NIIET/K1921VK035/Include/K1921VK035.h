@@ -23,9 +23,9 @@
 #ifndef __K1921VK035_H
 #define __K1921VK035_H
 
-#define __I     volatile const                /*!< defines 'read only' permissions */
-#define __O     volatile                      /*!< defines 'write only' permissions */
-#define __IO    volatile                      /*!< defines 'read / write' permissions */
+//#define __I     volatile const                /*!< defines 'read only' permissions */
+//#define __O     volatile                      /*!< defines 'write only' permissions */
+//#define __IO    volatile                      /*!< defines 'read / write' permissions */
 
 /* Start of section using anonymous unions */
 #if defined (__CC_ARM)
@@ -10054,7 +10054,7 @@ typedef struct {
 #define DMA                  ((DMA_TypeDef                 *) DMA_BASE)
 #define UART0                ((UART_TypeDef                *) UART0_BASE)
 #define UART1                ((UART_TypeDef                *) UART1_BASE)
-#define SPI                  ((SPI_TypeDef                 *) SPI_BASE)
+#define SPI0                  ((SPI_TypeDef                 *) SPI_BASE)
 #define TMR0                 ((TMR_TypeDef                 *) TMR0_BASE)
 #define TMR1                 ((TMR_TypeDef                 *) TMR1_BASE)
 #define TMR2                 ((TMR_TypeDef                 *) TMR2_BASE)
