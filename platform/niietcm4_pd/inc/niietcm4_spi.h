@@ -25,14 +25,14 @@ extern "C" {
   * @{
   */
 
-#define SPI_ITSource_RecieveTimeout SPI_IMSC_RTIM_Msk  /*!< Таймаут приема данных */
-#define SPI_ITSource_RecieveOverrun SPI_IMSC_RORIM_Msk /*!< Переполнение буфера приемника */
-#define SPI_ITSource_RxFIFOLevel SPI_IMSC_RXIM_Msk     /*!< Порог переполнения буфера приемника */
-#define SPI_ITSource_TxFIFOLevel SPI_IMSC_TXIM_Msk     /*!< Порог опустошения буфера передатчика */
-#define SPI_ITSource_All (SPI_IMSC_RTIM_Msk |  \
-                          SPI_IMSC_RORIM_Msk | \
-                          SPI_IMSC_RXIM_Msk |  \
-                          SPI_IMSC_TXIM_Msk) /*!< Все источники выбраны */
+#define SPI_ITSource_RecieveTimeout SPI_SPI_IMSC_RTIM_Msk  /*!< Таймаут приема данных */
+#define SPI_ITSource_RecieveOverrun SPI_SPI_IMSC_RORIM_Msk /*!< Переполнение буфера приемника */
+#define SPI_ITSource_RxFIFOLevel SPI_SPI_IMSC_RXIM_Msk     /*!< Порог переполнения буфера приемника */
+#define SPI_ITSource_TxFIFOLevel SPI_SPI_IMSC_TXIM_Msk     /*!< Порог опустошения буфера передатчика */
+#define SPI_ITSource_All (SPI_SPI_IMSC_RTIM_Msk |  \
+                          SPI_SPI_IMSC_RORIM_Msk | \
+                          SPI_SPI_IMSC_RXIM_Msk |  \
+                          SPI_SPI_IMSC_TXIM_Msk) /*!< Все источники выбраны */
 
 #define IS_SPI_IT_SOURCE(VALUE) (((VALUE) & ~SPI_ITSource_All) == 0)
 
