@@ -32,7 +32,7 @@
   */
 void SPI_DeInit(NT_SPI_TypeDef* SPIx)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
 
     if (SPIx == NT_SPI0) {
         RCC_PeriphRstCmd(RCC_PeriphRst_SPI0, DISABLE);
@@ -60,7 +60,7 @@ void SPI_DeInit(NT_SPI_TypeDef* SPIx)
   */
 void SPI_Init(NT_SPI_TypeDef* SPIx, SPI_Init_TypeDef* InitStruct)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
 
     SPI_SCKDivConfig(SPIx, InitStruct->SCKDiv, InitStruct->SCKDivExtra);
     SPI_DataWidthConfig(SPIx, InitStruct->DataWidth);

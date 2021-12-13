@@ -179,7 +179,7 @@ typedef struct
   */
 __STATIC_INLINE void SPI_Cmd(NT_SPI_TypeDef* SPIx, FunctionalState State)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
     assert_param(IS_FUNCTIONAL_STATE(State));
 
     WRITE_REG(SPIx->SPI_CR1_bit.SSE, State);
@@ -193,7 +193,7 @@ __STATIC_INLINE void SPI_Cmd(NT_SPI_TypeDef* SPIx, FunctionalState State)
   */
 __STATIC_INLINE void SPI_SlaveOutputDisCmd(NT_SPI_TypeDef* SPIx, FunctionalState State)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
     assert_param(IS_FUNCTIONAL_STATE(State));
 
     WRITE_REG(SPIx->SPI_CR1_bit.SOD, State);
@@ -208,7 +208,7 @@ __STATIC_INLINE void SPI_SlaveOutputDisCmd(NT_SPI_TypeDef* SPIx, FunctionalState
   */
 __STATIC_INLINE void SPI_SCKConfig(NT_SPI_TypeDef* SPIx, SPI_SCKPhase_TypeDef SCKPhase, SPI_SCKPolarity_TypeDef SCKPolarity)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
     assert_param(IS_SPI_SCK_PHASE(SCKPhase));
     assert_param(IS_SPI_SCK_POLARITY(SCKPolarity));
 
@@ -225,7 +225,7 @@ __STATIC_INLINE void SPI_SCKConfig(NT_SPI_TypeDef* SPIx, SPI_SCKPhase_TypeDef SC
   */
 __STATIC_INLINE void SPI_DataWidthConfig(NT_SPI_TypeDef* SPIx, SPI_DataWidth_TypeDef DataWidth)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
     assert_param(IS_SPI_DATA_WIDTH(DataWidth));
 
     WRITE_REG(SPIx->SPI_CR0_bit.DSS, DataWidth);
@@ -239,7 +239,7 @@ __STATIC_INLINE void SPI_DataWidthConfig(NT_SPI_TypeDef* SPIx, SPI_DataWidth_Typ
   */
 __STATIC_INLINE void SPI_ModeConfig(NT_SPI_TypeDef* SPIx, SPI_Mode_TypeDef Mode)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
     assert_param(IS_SPI_MODE(Mode));
 
     WRITE_REG(SPIx->SPI_CR1_bit.MS, Mode);
@@ -253,7 +253,7 @@ __STATIC_INLINE void SPI_ModeConfig(NT_SPI_TypeDef* SPIx, SPI_Mode_TypeDef Mode)
   */
 __STATIC_INLINE void SPI_FrameFormatConfig(NT_SPI_TypeDef* SPIx, SPI_FrameFormat_TypeDef FrameFormat)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
     assert_param(IS_SPI_FRAME_FORMAT(FrameFormat));
 
     WRITE_REG(SPIx->SPI_CR0_bit.FRF, FrameFormat);
@@ -272,7 +272,7 @@ __STATIC_INLINE void SPI_FrameFormatConfig(NT_SPI_TypeDef* SPIx, SPI_FrameFormat
   */
 __STATIC_INLINE void SPI_SCKDivConfig(NT_SPI_TypeDef* SPIx, uint32_t SCKDiv, uint32_t SCKDivExtra)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
     assert_param(IS_SPI_SCK_DIV(SCKDiv));
     assert_param(IS_SPI_SCK_DIV_EXTRA(SCKDivExtra));
 
@@ -304,7 +304,7 @@ void SPI_StructInit(SPI_Init_TypeDef* InitStruct);
   */
 __STATIC_INLINE void SPI_SendData(NT_SPI_TypeDef* SPIx, uint32_t Data)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
     assert_param(IS_SPI_DATA(Data));
 
     WRITE_REG(SPIx->SPI_DR, Data);
@@ -317,7 +317,7 @@ __STATIC_INLINE void SPI_SendData(NT_SPI_TypeDef* SPIx, uint32_t Data)
   */
 __STATIC_INLINE uint32_t SPI_RecieveData(NT_SPI_TypeDef* SPIx)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
 
     return READ_REG(SPIx->SPI_DR);
 }
@@ -332,7 +332,7 @@ __STATIC_INLINE uint32_t SPI_RecieveData(NT_SPI_TypeDef* SPIx)
   */
 __STATIC_INLINE FlagStatus SPI_FlagStatus(NT_SPI_TypeDef* SPIx, uint32_t Flag)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
     assert_param(IS_SPI_FLAG(Flag));
 
     return (FlagStatus)READ_BIT(SPIx->SPI_SR, Flag);
@@ -358,7 +358,7 @@ __STATIC_INLINE FlagStatus SPI_FlagStatus(NT_SPI_TypeDef* SPIx, uint32_t Flag)
   */
 __STATIC_INLINE void SPI_ITCmd(NT_SPI_TypeDef* SPIx, uint32_t ITSource, FunctionalState State)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
     assert_param(IS_SPI_IT_SOURCE(ITSource));
 
     MODIFY_REG(SPIx->SPI_IMSC, ITSource, State ? ITSource : 0);
@@ -374,7 +374,7 @@ __STATIC_INLINE void SPI_ITCmd(NT_SPI_TypeDef* SPIx, uint32_t ITSource, Function
   */
 __STATIC_INLINE FlagStatus SPI_ITRawStatus(NT_SPI_TypeDef* SPIx, uint32_t ITSource)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
     assert_param(IS_SPI_IT_SOURCE(ITSource));
 
     return (FlagStatus)READ_BIT(SPIx->SPI_RIS, ITSource);
@@ -390,7 +390,7 @@ __STATIC_INLINE FlagStatus SPI_ITRawStatus(NT_SPI_TypeDef* SPIx, uint32_t ITSour
   */
 __STATIC_INLINE FlagStatus SPI_ITMaskedStatus(NT_SPI_TypeDef* SPIx, uint32_t ITSource)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
     assert_param(IS_SPI_IT_SOURCE(ITSource));
 
     return (FlagStatus)READ_BIT(SPIx->SPI_MIS, ITSource);
@@ -405,7 +405,7 @@ __STATIC_INLINE FlagStatus SPI_ITMaskedStatus(NT_SPI_TypeDef* SPIx, uint32_t ITS
   */
 __STATIC_INLINE void SPI_ITStatusClear(NT_SPI_TypeDef* SPIx, uint32_t ITSource)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
     assert_param(IS_SPI_IT_SOURCE(ITSource));
 
     WRITE_REG(SPIx->SPI_ICR, ITSource);
@@ -427,7 +427,7 @@ __STATIC_INLINE void SPI_ITStatusClear(NT_SPI_TypeDef* SPIx, uint32_t ITSource)
   */
 __STATIC_INLINE void SPI_DMARxCmd(NT_SPI_TypeDef* SPIx, FunctionalState State)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
     assert_param(IS_FUNCTIONAL_STATE(State));
 
     WRITE_REG(SPIx->SPI_DMACR_bit.RXDMAE, State);
@@ -441,7 +441,7 @@ __STATIC_INLINE void SPI_DMARxCmd(NT_SPI_TypeDef* SPIx, FunctionalState State)
   */
 __STATIC_INLINE void SPI_DMATxCmd(NT_SPI_TypeDef* SPIx, FunctionalState State)
 {
-    assert_param(IS_SPI_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
     assert_param(IS_FUNCTIONAL_STATE(State));
 
     WRITE_REG(SPIx->SPI_DMACR_bit.TXDMAE, State);
