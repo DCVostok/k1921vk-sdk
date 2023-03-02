@@ -10,4 +10,4 @@ K1921VKx SDK port for [PlatformIO](http://platformio.org)
 ## Supported MCU's
 * K1921VK035
 * K1921VK01
-* K1921Vk028
+* K1921VK028
