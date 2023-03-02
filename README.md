@@ -7,3 +7,7 @@ K1921VKx SDK port for [PlatformIO](http://platformio.org)
 * Port is used by [NIIET K1921VK: development platform for PlatformIO](https://github.com/DCVostok/pio_platform_k1921vk)
 
 * Some unused files were delete
+## Supported MCU's
+* K1921VK035
+* K1921VK01
+* K1921Vk028
