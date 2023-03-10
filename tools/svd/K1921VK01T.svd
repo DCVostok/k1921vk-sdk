@@ -3451,7 +3451,7 @@
       <name>NT_GPIOA</name>
       <version>1.0</version>
       <description>GPIO controller regisres</description>
-      <groupName>8GPIO</groupName>
+      <groupName>GPIO</groupName>
       <baseAddress>0x80010000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -3842,8 +3842,8 @@
         <!-- GPIODENA: Port A digital enable register -->
         <register>
           <name>GPIODENA</name>
-          <alternateRegister>GPIODEN0</alternateRegister>
           <description>Port A digital enable register</description>
+          <alternateRegister>GPIODEN0</alternateRegister>
           <addressOffset>0x0000</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -3862,8 +3862,8 @@
         <!-- GPIODENB: Port B digital enable register -->
         <register>
           <name>GPIODENB</name>
-          <alternateRegister>GPIODEN0</alternateRegister>
           <description>Port B digital enable register</description>
+          <alternateRegister>GPIODEN0</alternateRegister>
           <addressOffset>0x0002</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -3908,8 +3908,8 @@
         <!-- GPIODENC: Port C digital enable register -->
         <register>
           <name>GPIODENC</name>
-          <alternateRegister>GPIODEN1</alternateRegister>
           <description>Port C digital enable register</description>
+          <alternateRegister>GPIODEN1</alternateRegister>
           <addressOffset>0x0004</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -3928,8 +3928,8 @@
         <!-- GPIODEND: Port D digital enable register -->
         <register>
           <name>GPIODEND</name>
-          <alternateRegister>GPIODEN1</alternateRegister>
           <description>Port D digital enable register</description>
+          <alternateRegister>GPIODEN1</alternateRegister>
           <addressOffset>0x0006</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -3974,8 +3974,8 @@
         <!-- GPIODENE: Port E digital enable register -->
         <register>
           <name>GPIODENE</name>
-          <alternateRegister>GPIODEN2</alternateRegister>
           <description>Port E digital enable register</description>
+          <alternateRegister>GPIODEN2</alternateRegister>
           <addressOffset>0x0008</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -3994,8 +3994,8 @@
         <!-- GPIODENF: Port F digital enable register -->
         <register>
           <name>GPIODENF</name>
-          <alternateRegister>GPIODEN2</alternateRegister>
           <description>Port F digital enable register</description>
+          <alternateRegister>GPIODEN2</alternateRegister>
           <addressOffset>0x000A</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -4040,8 +4040,8 @@
         <!-- GPIODENG: Port G digital enable register -->
         <register>
           <name>GPIODENG</name>
-          <alternateRegister>GPIODEN3</alternateRegister>
           <description>Port G digital enable register</description>
+          <alternateRegister>GPIODEN3</alternateRegister>
           <addressOffset>0x000C</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -4060,8 +4060,8 @@
         <!-- GPIODENH: Port H digital enable register -->
         <register>
           <name>GPIODENH</name>
-          <alternateRegister>GPIODEN3</alternateRegister>
           <description>Port H digital enable register</description>
+          <alternateRegister>GPIODEN3</alternateRegister>
           <addressOffset>0x000E</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7402,8 +7402,8 @@
         <!-- GPIOODCTLA: Port A open-drain enable register -->
         <register>
           <name>GPIOODCTLA</name>
-          <alternateRegister>GPIOODCTL0</alternateRegister>
           <description>Port A open-drain enable register</description>
+          <alternateRegister>GPIOODCTL0</alternateRegister>
           <addressOffset>0x0048</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7422,8 +7422,8 @@
         <!-- GPIOODCTLB: Port B open-drain enable register -->
         <register>
           <name>GPIOODCTLB</name>
-          <alternateRegister>GPIOODCTL0</alternateRegister>
           <description>Port B open-drain enable register</description>
+          <alternateRegister>GPIOODCTL0</alternateRegister>
           <addressOffset>0x004A</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7468,8 +7468,8 @@
         <!-- GPIOODCTLC: Port C open-drain enable register -->
         <register>
           <name>GPIOODCTLC</name>
-          <alternateRegister>GPIOODCTL1</alternateRegister>
           <description>Port C open-drain enable register</description>
+          <alternateRegister>GPIOODCTL1</alternateRegister>
           <addressOffset>0x004C</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7488,8 +7488,8 @@
         <!-- GPIOODCTLD: Port D open-drain enable register -->
         <register>
           <name>GPIOODCTLD</name>
-          <alternateRegister>GPIOODCTL1</alternateRegister>
           <description>Port D open-drain enable register</description>
+          <alternateRegister>GPIOODCTL1</alternateRegister>
           <addressOffset>0x004E</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7534,8 +7534,8 @@
         <!-- GPIOODCTLE: Port E open-drain enable register -->
         <register>
           <name>GPIOODCTLE</name>
-          <alternateRegister>GPIOODCTL2</alternateRegister>
           <description>Port E open-drain enable register</description>
+          <alternateRegister>GPIOODCTL2</alternateRegister>
           <addressOffset>0x0050</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7554,8 +7554,8 @@
         <!-- GPIOODCTLF: Port F open-drain enable register -->
         <register>
           <name>GPIOODCTLF</name>
-          <alternateRegister>GPIOODCTL2</alternateRegister>
           <description>Port F open-drain enable register</description>
+          <alternateRegister>GPIOODCTL2</alternateRegister>
           <addressOffset>0x0052</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7600,8 +7600,8 @@
         <!-- GPIOODCTLG: Port G open-drain enable register -->
         <register>
           <name>GPIOODCTLG</name>
-          <alternateRegister>GPIOODCTL3</alternateRegister>
           <description>Port G open-drain enable register</description>
+          <alternateRegister>GPIOODCTL3</alternateRegister>
           <addressOffset>0x0054</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7620,8 +7620,8 @@
         <!-- GPIOODCTLH: Port H open-drain enable register -->
         <register>
           <name>GPIOODCTLH</name>
-          <alternateRegister>GPIOODCTL3</alternateRegister>
           <description>Port H open-drain enable register</description>
+          <alternateRegister>GPIOODCTL3</alternateRegister>
           <addressOffset>0x0056</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7666,8 +7666,8 @@
         <!-- GPIODSCTLA: Port A strength control register -->
         <register>
           <name>GPIODSCTLA</name>
-          <alternateRegister>GPIODSCTL0</alternateRegister>
           <description>Port A strength control register</description>
+          <alternateRegister>GPIODSCTL0</alternateRegister>
           <addressOffset>0x0060</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7686,8 +7686,8 @@
         <!-- GPIODSCTLB: Port B strength control register -->
         <register>
           <name>GPIODSCTLB</name>
-          <alternateRegister>GPIODSCTL0</alternateRegister>
           <description>Port B strength control register</description>
+          <alternateRegister>GPIODSCTL0</alternateRegister>
           <addressOffset>0x0062</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7732,8 +7732,8 @@
         <!-- GPIODSCTLC: Port C strength control register -->
         <register>
           <name>GPIODSCTLC</name>
-          <alternateRegister>GPIODSCTL1</alternateRegister>
           <description>Port C strength control register</description>
+          <alternateRegister>GPIODSCTL1</alternateRegister>
           <addressOffset>0x0064</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7752,8 +7752,8 @@
         <!-- GPIODSCTLD: Port D strength control register -->
         <register>
           <name>GPIODSCTLD</name>
-          <alternateRegister>GPIODSCTL1</alternateRegister>
           <description>Port D strength control register</description>
+          <alternateRegister>GPIODSCTL1</alternateRegister>
           <addressOffset>0x0066</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7798,8 +7798,8 @@
         <!-- GPIODSCTLE: Port E strength control register -->
         <register>
           <name>GPIODSCTLE</name>
-          <alternateRegister>GPIODSCTL2</alternateRegister>
           <description>Port E strength control register</description>
+          <alternateRegister>GPIODSCTL2</alternateRegister>
           <addressOffset>0x0068</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7818,8 +7818,8 @@
         <!-- GPIODSCTLF: Port F strength control register -->
         <register>
           <name>GPIODSCTLF</name>
-          <alternateRegister>GPIODSCTL2</alternateRegister>
           <description>Port F strength control register</description>
+          <alternateRegister>GPIODSCTL2</alternateRegister>
           <addressOffset>0x006A</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7864,8 +7864,8 @@
         <!-- GPIODSCTLG: Port G strength control register -->
         <register>
           <name>GPIODSCTLG</name>
-          <alternateRegister>GPIODSCTL3</alternateRegister>
           <description>Port G strength control register</description>
+          <alternateRegister>GPIODSCTL3</alternateRegister>
           <addressOffset>0x006C</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7884,8 +7884,8 @@
         <!-- GPIODSCTLH: Port H strength control register -->
         <register>
           <name>GPIODSCTLH</name>
-          <alternateRegister>GPIODSCTL3</alternateRegister>
           <description>Port H strength control register</description>
+          <alternateRegister>GPIODSCTL3</alternateRegister>
           <addressOffset>0x006E</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7930,8 +7930,8 @@
         <!-- GPIOPUCTLA: Port A pull-up enable register -->
         <register>
           <name>GPIOPUCTLA</name>
-          <alternateRegister>GPIOPUCTL0</alternateRegister>
           <description>Port A pull-up enable register</description>
+          <alternateRegister>GPIOPUCTL0</alternateRegister>
           <addressOffset>0x0078</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7950,8 +7950,8 @@
         <!-- GPIOPUCTLB: Port B pull-up enable register -->
         <register>
           <name>GPIOPUCTLB</name>
-          <alternateRegister>GPIOPUCTL0</alternateRegister>
           <description>Port B pull-up enable register</description>
+          <alternateRegister>GPIOPUCTL0</alternateRegister>
           <addressOffset>0x007A</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -7996,8 +7996,8 @@
         <!-- GPIOPUCTLC: Port C pull-up enable register -->
         <register>
           <name>GPIOPUCTLC</name>
-          <alternateRegister>GPIOPUCTL1</alternateRegister>
           <description>Port C pull-up enable register</description>
+          <alternateRegister>GPIOPUCTL1</alternateRegister>
           <addressOffset>0x007C</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -8016,8 +8016,8 @@
         <!-- GPIOPUCTLD: Port D pull-up enable register -->
         <register>
           <name>GPIOPUCTLD</name>
-          <alternateRegister>GPIOPUCTL1</alternateRegister>
           <description>Port D pull-up enable register</description>
+          <alternateRegister>GPIOPUCTL1</alternateRegister>
           <addressOffset>0x007E</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -8062,8 +8062,8 @@
         <!-- GPIOPUCTLE: Port E pull-up enable register -->
         <register>
           <name>GPIOPUCTLE</name>
-          <alternateRegister>GPIOPUCTL2</alternateRegister>
           <description>Port E pull-up enable register</description>
+          <alternateRegister>GPIOPUCTL2</alternateRegister>
           <addressOffset>0x0080</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -8082,8 +8082,8 @@
         <!-- GPIOPUCTLF: Port F pull-up enable register -->
         <register>
           <name>GPIOPUCTLF</name>
-          <alternateRegister>GPIOPUCTL2</alternateRegister>
           <description>Port F pull-up enable register</description>
+          <alternateRegister>GPIOPUCTL2</alternateRegister>
           <addressOffset>0x0082</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -8128,8 +8128,8 @@
         <!-- GPIOPUCTLG: Port G pull-up enable register -->
         <register>
           <name>GPIOPUCTLG</name>
-          <alternateRegister>GPIOPUCTL3</alternateRegister>
           <description>Port G pull-up enable register</description>
+          <alternateRegister>GPIOPUCTL3</alternateRegister>
           <addressOffset>0x0084</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -8148,8 +8148,8 @@
         <!-- GPIOPUCTLH: Port H pull-up enable register -->
         <register>
           <name>GPIOPUCTLH</name>
-          <alternateRegister>GPIOPUCTL3</alternateRegister>
           <description>Port H pull-up enable register</description>
+          <alternateRegister>GPIOPUCTL3</alternateRegister>
           <addressOffset>0x0086</addressOffset>
           <size>16</size>
           <access>read-write</access>
@@ -10820,8 +10820,6 @@
             <size>32</size>
             <resetValue>0x00000000</resetValue>
             <resetMask>0xFFFFFFFF</resetMask>
-            <fields>
-            </fields>
           </register>
         </cluster>
         <cluster>
@@ -11341,8 +11339,8 @@
           <!-- MOSTAT: Status register of the message object 0 -->
           <register>
             <name>MOSTAT</name>
-            <alternateRegister>MOFCR</alternateRegister>
             <description>Status register of the message object 0</description>
+            <alternateRegister>MOFCR</alternateRegister>
             <addressOffset>0x1C</addressOffset>
             <size>32</size>
             <access>read-only</access>
@@ -13177,9 +13175,9 @@
       <name>NT_USBDevice</name>
       <version>1.0</version>
       <description>USB Device controller registers</description>
+      <alternatePeripheral>NT_USBHost</alternatePeripheral>
       <groupName>USBDevice</groupName>
       <baseAddress>0x80090000</baseAddress>
-      <alternatePeripheral>NT_USBHost</alternatePeripheral>
       <size>32</size>
       <access>read-write</access>
 
@@ -14876,7 +14874,7 @@
       <name>NT_I2C0</name>
       <version>1.0</version>
       <description>I2C controller registers</description>
-      <groupName>2I2C</groupName>
+      <groupName>I2C</groupName>
       <baseAddress>0xA0001000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -15185,7 +15183,7 @@
       <name>NT_TIMER0</name>
       <version>1.0</version>
       <description>TIMER controller registers</description>
-      <groupName>3TIMER</groupName>
+      <groupName>TIMER</groupName>
       <baseAddress>0xA0003000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -17618,7 +17616,7 @@
       <name>NT_PWM0</name>
       <version>1.0</version>
       <description>PWM controller registers</description>
-      <groupName>9PWM</groupName>
+      <groupName>PWM</groupName>
       <baseAddress>0xA000B000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -19842,7 +19840,7 @@
       <name>NT_CAP0</name>
       <version>1.0</version>
       <description>CAP controller registers</description>
-      <groupName>6CAP</groupName>
+      <groupName>CAP</groupName>
       <baseAddress>0xA0014000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -20464,7 +20462,7 @@
       <name>NT_QEP0</name>
       <version>1.0</version>
       <description>QEP controller registers</description>
-      <groupName>2QEP</groupName>
+      <groupName>QEP</groupName>
       <baseAddress>0xA001A000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -22109,7 +22107,7 @@
       <name>NT_UART0</name>
       <version>1.0</version>
       <description>UART controller registers</description>
-      <groupName>4UART</groupName>
+      <groupName>UART</groupName>
       <baseAddress>0xA0007000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -23646,7 +23644,7 @@
       <name>NT_SPI0</name>
       <version>1.0</version>
       <description>SPI controller registers</description>
-      <groupName>4SPI</groupName>
+      <groupName>SPI</groupName>
       <baseAddress>0xA001E000</baseAddress>
       <size>32</size>
       <access>read-write</access>

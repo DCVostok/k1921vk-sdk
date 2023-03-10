@@ -21,7 +21,7 @@
     <name>CM4</name>
     <revision>r0p1</revision>
     <endian>little</endian>
-    <mpuPresent>true</mpuPresent>
+    <mpuPresent>false</mpuPresent>
     <fpuPresent>true</fpuPresent>
     <nvicPrioBits>3</nvicPrioBits>
     <vendorSystickConfig>false</vendorSystickConfig>
@@ -293,11 +293,6 @@
                   <description>request by PWM0A</description>
                   <value>0</value>
                 </enumeratedValue>
-                <enumeratedValue>
-                  <name>Reserved</name>
-                  <description>no source</description>
-                  <value>1</value>
-                </enumeratedValue>
               </enumeratedValues>
             </field>
             <!-- SRCSEL14: Request source select for DMA channel 14 -->
@@ -313,11 +308,6 @@
                   <description>request by PWM1A</description>
                   <value>0</value>
                 </enumeratedValue>
-                <enumeratedValue>
-                  <name>Reserved</name>
-                  <description>no source</description>
-                  <value>1</value>
-                </enumeratedValue>
               </enumeratedValues>
             </field>
             <!-- SRCSEL15: Request source select for DMA channel 15 -->
@@ -332,11 +322,6 @@
                   <name>PWM2A</name>
                   <description>request by PWM2A</description>
                   <value>0</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>Reserved</name>
-                  <description>no source</description>
-                  <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
@@ -1137,7 +1122,6 @@
         <!-- dimElementGroup -->
           <dim>2</dim>
           <dimIncrement>4</dimIncrement>
-          <dimIndex>0-1</dimIndex>
         <!-- end of dimElementGroup -->
           <name>UARTCFG[%s]</name>
           <description>UARTCFG</description>
@@ -1899,7 +1883,7 @@
       <name>TMR0</name>
       <version>1.0</version>
       <description>TMR controller registers</description>
-      <groupName>4TMR</groupName>
+      <groupName>TMR</groupName>
       <baseAddress>0x40048000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -2707,7 +2691,6 @@
         <!-- dimElementGroup -->
           <dim>2</dim>
           <dimIncrement>52</dimIncrement>
-          <dimIndex>0-1</dimIndex>
         <!-- end of dimElementGroup -->
           <name>SEQ[%s]</name>
           <description>SEQ</description>
@@ -3083,7 +3066,6 @@
         <!-- dimElementGroup -->
           <dim>4</dim>
           <dimIncrement>12</dimIncrement>
-          <dimIndex>0-3</dimIndex>
         <!-- end of dimElementGroup -->
           <name>DC[%s]</name>
           <description>DC</description>
@@ -3314,7 +3296,6 @@
         <!-- dimElementGroup -->
           <dim>4</dim>
           <dimIncrement>4</dimIncrement>
-          <dimIndex>0-3</dimIndex>
         <!-- end of dimElementGroup -->
           <name>CHCTL[%s]</name>
           <description>CHCTL</description>
@@ -3360,7 +3341,7 @@
       <name>GPIOA</name>
       <version>1.0</version>
       <description>GPIO control registers</description>
-      <groupName>2GPIO</groupName>
+      <groupName>GPIO</groupName>
       <baseAddress>0x40010000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -8917,8 +8898,8 @@
         <!-- LOCKSTAT: LOCKSET/LOCKCLR write enable status register -->
         <register>
           <name>LOCKSTAT</name>
-          <alternateRegister>LOCKKEY</alternateRegister>
           <description>LOCKSET/LOCKCLR write enable status register</description>
+          <alternateRegister>LOCKKEY</alternateRegister>
           <addressOffset>0x009C</addressOffset>
           <size>32</size>
           <access>read-only</access>
@@ -9186,7 +9167,6 @@
         <!-- dimElementGroup -->
           <dim>256</dim>
           <dimIncrement>4</dimIncrement>
-          <dimIndex>0-255</dimIndex>
         <!-- end of dimElementGroup -->
           <name>MASKLB[%s]</name>
           <description>MASKLB</description>
@@ -9215,7 +9195,6 @@
         <!-- dimElementGroup -->
           <dim>256</dim>
           <dimIncrement>4</dimIncrement>
-          <dimIndex>0-255</dimIndex>
         <!-- end of dimElementGroup -->
           <name>MASKHB[%s]</name>
           <description>MASKHB</description>
@@ -9257,7 +9236,7 @@
       <name>UART0</name>
       <version>1.0</version>
       <description>UART control registers</description>
-      <groupName>2UART</groupName>
+      <groupName>UART</groupName>
       <baseAddress>0x40045000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -11796,7 +11775,6 @@
         <!-- dimElementGroup -->
           <dim>2</dim>
           <dimIncrement>4</dimIncrement>
-          <dimIndex>0-1</dimIndex>
         <!-- end of dimElementGroup -->
           <name>DATA[%s]</name>
           <description>DATA</description>
@@ -11869,7 +11847,7 @@
             <!-- KEY: Magic Key for flash access "C0DE" -->
             <field>
               <name>KEY</name>
-              <description>Magic Key for flash access "C0DE"</description>
+              <description>Magic Key for flash access `C0DE`</description>
               <bitRange>[31:16]</bitRange>
               <access>read-write</access>
               <enumeratedValues>
@@ -13307,7 +13285,7 @@
       <name>ECAP0</name>
       <version>1.0</version>
       <description>ECAP controller registers</description>
-      <groupName>3ECAP</groupName>
+      <groupName>ECAP</groupName>
       <baseAddress>0x40051000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -13384,8 +13362,8 @@
         <!-- PRD: Period register -->
         <register>
           <name>PRD</name>
-          <alternateRegister>CAP0</alternateRegister>
           <description>Period register</description>
+          <alternateRegister>CAP0</alternateRegister>
           <addressOffset>0x0008</addressOffset>
           <size>32</size>
           <access>read-write</access>
@@ -13423,8 +13401,8 @@
         <!-- CMP: Compare register -->
         <register>
           <name>CMP</name>
-          <alternateRegister>CAP1</alternateRegister>
           <description>Compare register</description>
+          <alternateRegister>CAP1</alternateRegister>
           <addressOffset>0x000C</addressOffset>
           <size>32</size>
           <access>read-write</access>
@@ -13462,8 +13440,8 @@
         <!-- PRDSHDW: Period shadow register -->
         <register>
           <name>PRDSHDW</name>
-          <alternateRegister>CAP2</alternateRegister>
           <description>Period shadow register</description>
+          <alternateRegister>CAP2</alternateRegister>
           <addressOffset>0x0010</addressOffset>
           <size>32</size>
           <access>read-write</access>
@@ -13501,8 +13479,8 @@
         <!-- CMPSHDW: Compare shadow register -->
         <register>
           <name>CMPSHDW</name>
-          <alternateRegister>CAP3</alternateRegister>
           <description>Compare shadow register</description>
+          <alternateRegister>CAP3</alternateRegister>
           <addressOffset>0x0014</addressOffset>
           <size>32</size>
           <access>read-write</access>
@@ -14018,7 +13996,7 @@
       <name>PWM0</name>
       <version>1.0</version>
       <description>PWM controller registers</description>
-      <groupName>3PWM</groupName>
+      <groupName>PWM</groupName>
       <baseAddress>0x4004C000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -17620,7 +17598,6 @@
         <!-- dimElementGroup -->
           <dim>8</dim>
           <dimIncrement>4</dimIncrement>
-          <dimIndex>0-7</dimIndex>
         <!-- end of dimElementGroup -->
           <name>LIST[%s]</name>
           <description>LIST</description>
@@ -17670,7 +17647,6 @@
         <!-- dimElementGroup -->
           <dim>4</dim>
           <dimIncrement>4</dimIncrement>
-          <dimIndex>0-3</dimIndex>
         <!-- end of dimElementGroup -->
           <name>MSPND[%s]</name>
           <description>MSPND</description>
@@ -17699,7 +17675,6 @@
         <!-- dimElementGroup -->
           <dim>4</dim>
           <dimIncrement>4</dimIncrement>
-          <dimIndex>0-3</dimIndex>
         <!-- end of dimElementGroup -->
           <name>MSID[%s]</name>
           <description>MSID</description>
@@ -17832,7 +17807,6 @@
         <!-- dimElementGroup -->
           <dim>2</dim>
           <dimIncrement>256</dimIncrement>
-          <dimIndex>0-1</dimIndex>
         <!-- end of dimElementGroup -->
           <name>Node[%s]</name>
           <description>Node</description>
@@ -18237,8 +18211,6 @@
             <size>32</size>
             <resetValue>0x00000000</resetValue>
             <resetMask>0xFFFFFFFF</resetMask>
-            <fields>
-            </fields>
           </register>
         </cluster>
       </registers>
@@ -18266,7 +18238,6 @@
         <!-- dimElementGroup -->
           <dim>64</dim>
           <dimIncrement>32</dimIncrement>
-          <dimIndex>0-63</dimIndex>
         <!-- end of dimElementGroup -->
           <name>Msg[%s]</name>
           <description>Msg</description>
@@ -18804,8 +18775,8 @@
           <!-- MOSTAT: Message Object Status Register 0 -->
           <register>
             <name>MOSTAT</name>
-            <alternateRegister>MOFCR</alternateRegister>
             <description>Message Object Status Register 0</description>
+            <alternateRegister>MOFCR</alternateRegister>
             <addressOffset>0x1C</addressOffset>
             <size>32</size>
             <access>read-only</access>

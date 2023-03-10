@@ -3529,7 +3529,7 @@
       <name>TMR0</name>
       <version>1.0</version>
       <description>TMR controller registers</description>
-      <groupName>4TMR</groupName>
+      <groupName>TMR</groupName>
       <baseAddress>0x40091000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -3716,7 +3716,7 @@
       <name>ETMR0</name>
       <version>1.0</version>
       <description>ETMR controller registers</description>
-      <groupName>4ETMR</groupName>
+      <groupName>ETMR</groupName>
       <baseAddress>0x40095000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -7945,7 +7945,7 @@
       <name>GPIOA</name>
       <version>1.0</version>
       <description>GPIO control registers</description>
-      <groupName>12GPIO</groupName>
+      <groupName>GPIO</groupName>
       <baseAddress>0x40010000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -12191,8 +12191,8 @@
         <!-- LOCKSTAT: Write LOCKSET/LOCKCLR enable status register -->
         <register>
           <name>LOCKSTAT</name>
-          <alternateRegister>LOCKKEY</alternateRegister>
           <description>Write LOCKSET/LOCKCLR enable status register</description>
+          <alternateRegister>LOCKKEY</alternateRegister>
           <addressOffset>0x009C</addressOffset>
           <size>32</size>
           <access>read-only</access>
@@ -12526,7 +12526,7 @@
       <name>TUART0</name>
       <version>1.0</version>
       <description>Tiny UART control registers</description>
-      <groupName>2TUART</groupName>
+      <groupName>TUART</groupName>
       <baseAddress>0x40089000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -12772,7 +12772,7 @@
       <name>OWI0</name>
       <version>1.0</version>
       <description>OWI control registers</description>
-      <groupName>2OWI</groupName>
+      <groupName>OWI</groupName>
       <baseAddress>0x400AF000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -12964,7 +12964,7 @@
       <name>UART0</name>
       <version>1.0</version>
       <description>UART control registers</description>
-      <groupName>4UART</groupName>
+      <groupName>UART</groupName>
       <baseAddress>0x40085000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -18214,7 +18214,7 @@
       <name>PWM0</name>
       <version>1.0</version>
       <description>PWM controller registers</description>
-      <groupName>10PWM</groupName>
+      <groupName>PWM</groupName>
       <baseAddress>0x400A0000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -22140,7 +22140,7 @@
       <name>SPI0</name>
       <version>1.0</version>
       <description>SPI control registers</description>
-      <groupName>4SPI</groupName>
+      <groupName>SPI</groupName>
       <baseAddress>0x4008D000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -23509,8 +23509,6 @@
             <size>32</size>
             <resetValue>0x00000000</resetValue>
             <resetMask>0xFFFFFFFF</resetMask>
-            <fields>
-            </fields>
           </register>
         </cluster>
       </registers>
@@ -24051,8 +24049,8 @@
           <!-- MOSTAT: Status register of the message object 0 -->
           <register>
             <name>MOSTAT</name>
-            <alternateRegister>MOFCR</alternateRegister>
             <description>Status register of the message object 0</description>
+            <alternateRegister>MOFCR</alternateRegister>
             <addressOffset>0x1C</addressOffset>
             <size>32</size>
             <access>read-only</access>
@@ -24171,7 +24169,7 @@
       <name>I2C0</name>
       <version>1.0</version>
       <description>I2C controller registers</description>
-      <groupName>2I2C</groupName>
+      <groupName>I2C</groupName>
       <baseAddress>0x4008B000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -24764,7 +24762,7 @@
       <name>ECAP0</name>
       <version>1.0</version>
       <description>ECAP controller registers</description>
-      <groupName>6ECAP</groupName>
+      <groupName>ECAP</groupName>
       <baseAddress>0x4009A000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -24840,8 +24838,8 @@
         <!-- PRD: Period register -->
         <register>
           <name>PRD</name>
-          <alternateRegister>CAP0</alternateRegister>
           <description>Period register</description>
+          <alternateRegister>CAP0</alternateRegister>
           <addressOffset>0x0008</addressOffset>
           <size>32</size>
           <access>read-write</access>
@@ -24878,8 +24876,8 @@
         <!-- CMP: Compare register -->
         <register>
           <name>CMP</name>
-          <alternateRegister>CAP1</alternateRegister>
           <description>Compare register</description>
+          <alternateRegister>CAP1</alternateRegister>
           <addressOffset>0x000C</addressOffset>
           <size>32</size>
           <access>read-write</access>
@@ -24916,8 +24914,8 @@
         <!-- PRDSHDW: Period shadow register -->
         <register>
           <name>PRDSHDW</name>
-          <alternateRegister>CAP2</alternateRegister>
           <description>Period shadow register</description>
+          <alternateRegister>CAP2</alternateRegister>
           <addressOffset>0x0010</addressOffset>
           <size>32</size>
           <access>read-write</access>
@@ -24954,8 +24952,8 @@
         <!-- CMPSHDW: Compare shadow register -->
         <register>
           <name>CMPSHDW</name>
-          <alternateRegister>CAP3</alternateRegister>
           <description>Compare shadow register</description>
+          <alternateRegister>CAP3</alternateRegister>
           <addressOffset>0x0014</addressOffset>
           <size>32</size>
           <access>read-write</access>
@@ -25501,7 +25499,7 @@
       <name>QEP0</name>
       <version>1.0</version>
       <description>QEP controller registers</description>
-      <groupName>4QEP</groupName>
+      <groupName>QEP</groupName>
       <baseAddress>0x400AA000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -26804,7 +26802,7 @@
       <name>MILSTD0</name>
       <version>1.0</version>
       <description>MIL-STD 1553 control registers</description>
-      <groupName>2MILSTD</groupName>
+      <groupName>MILSTD</groupName>
       <baseAddress>0x40072000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -28206,7 +28204,7 @@
       <name>SPWR0</name>
       <version>1.0</version>
       <description>SpaceWire control registers</description>
-      <groupName>2SPWR</groupName>
+      <groupName>SPWR</groupName>
       <baseAddress>0x40070000</baseAddress>
       <size>32</size>
       <access>read-write</access>
