@@ -103,6 +103,8 @@ SECTIONS
 
     .text : {
         *(.text.startup .text.startup.*)
+        . = ALIGN(16);
+        *(.text.irq_entry_align16)
         *(.text .text.*)
         *(.gnu.linkonce.t.*)
     } >rom :text

@@ -4,8 +4,7 @@
 #include <stdint.h>
 
 // machine irq handler
-static void irq_entry(void)
-    __attribute__((interrupt("machine"), optimize("align-functions=4")));
+static void irq_entry(void) __attribute__((interrupt("machine"), optimize("align-functions=4"), section(".text.irq_entry_align16")));
 
 irqfunc_t* riscv_handler_map[RISCV_IRQ_NUMS];
 

@@ -1,7 +1,6 @@
 #include "mtimer.h"
 
-static volatile uint64_t _timestamp;
-static volatile irqfunc_t* _mtimer_irq_callback;
+static irqfunc_t* _mtimer_irq_callback;
 static volatile uint64_t _irq_ticks;
 void _mtimer_handler();
 
@@ -55,7 +54,6 @@ void mtimer_config_irq(uint64_t ticks, irqfunc_t* irq_callback){
     riscv_irq_global_disable();
     _irq_ticks = ticks;
     // Setup timer for 1 second interval
-    _timestamp = mtimer_get_raw_time();
     _mtimer_irq_callback = irq_callback;
     mtimer_set_raw_time_cmp(_irq_ticks);
     riscv_irq_set_handler(RISCV_IRQ_MTI, _mtimer_handler);
@@ -68,6 +66,5 @@ void _mtimer_handler(){
     _mtimer_irq_callback();
     
     mtimer_set_raw_time_cmp(_irq_ticks);
-    _timestamp = mtimer_get_raw_time();
 
 }
