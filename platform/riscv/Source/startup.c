@@ -31,6 +31,7 @@ void _fpu_init(void);
 
 // Standard entry point, no arguments.
 extern int main(void);
+extern void SystemInit(void);
 
 // The linker script will place this in the reset entry point.
 // It will be 'called' with no stack or C runtime configuration.
@@ -112,7 +113,7 @@ void _start(void) {
            (const void*)&__data_source_start,
            (&__data_target_end - &__data_target_start));
 
-    _fpu_init();
+        _fpu_init();
 
     // Call constructors
     for (const function_t* entry=&__preinit_array_start; 
@@ -125,7 +126,9 @@ void _start(void) {
          ++entry) {
         (*entry)();
     }
-
+    #ifndef __NO_SYSTEM_INIT
+    SystemInit();
+    #endif
     int rc = main();
 
     // Call destructors

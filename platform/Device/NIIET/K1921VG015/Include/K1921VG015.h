@@ -1,3 +1,5 @@
+#ifndef K1921VG015_H
+#define K1921VG015_H
 #include <stdint.h>
 #include "K1921VG015_regs.h"
 
@@ -104,3 +106,5 @@ typedef enum {
 #define RISCV_CLINT_ADDR 0x2000000UL
 
 #include <mtimer.h>
+
+#endif//K1921VG015_H

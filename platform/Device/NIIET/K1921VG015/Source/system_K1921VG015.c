@@ -1,59 +1,52 @@
-/*==============================================================================
- * Инициализация К1921ВК035
- *------------------------------------------------------------------------------
- * НИИЭТ, Богдан Колбов <kolbov@niiet.ru>
- *==============================================================================
- * ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ «КАК ЕСТЬ», БЕЗ КАКИХ-ЛИБО
- * ГАРАНТИЙ, ЯВНО ВЫРАЖЕННЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ ГАРАНТИИ ТОВАРНОЙ
- * ПРИГОДНОСТИ, СООТВЕТСТВИЯ ПО ЕГО КОНКРЕТНОМУ НАЗНАЧЕНИЮ И ОТСУТСТВИЯ
- * НАРУШЕНИЙ, НО НЕ ОГРАНИЧИВАЯСЬ ИМИ. ДАННОЕ ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ
- * ПРЕДНАЗНАЧЕНО ДЛЯ ОЗНАКОМИТЕЛЬНЫХ ЦЕЛЕЙ И НАПРАВЛЕНО ТОЛЬКО НА
- * ПРЕДОСТАВЛЕНИЕ ДОПОЛНИТЕЛЬНОЙ ИНФОРМАЦИИ О ПРОДУКТЕ, С ЦЕЛЬЮ СОХРАНИТЬ ВРЕМЯ
- * ПОТРЕБИТЕЛЮ. НИ В КАКОМ СЛУЧАЕ АВТОРЫ ИЛИ ПРАВООБЛАДАТЕЛИ НЕ НЕСУТ
- * ОТВЕТСТВЕННОСТИ ПО КАКИМ-ЛИБО ИСКАМ, ЗА ПРЯМОЙ ИЛИ КОСВЕННЫЙ УЩЕРБ, ИЛИ
- * ПО ИНЫМ ТРЕБОВАНИЯМ, ВОЗНИКШИМ ИЗ-ЗА ИСПОЛЬЗОВАНИЯ ПРОГРАММНОГО ОБЕСПЕЧЕНИЯ
- * ИЛИ ИНЫХ ДЕЙСТВИЙ С ПРОГРАММНЫМ ОБЕСПЕЧЕНИЕМ.
- *
- *                              2018 АО "НИИЭТ"
- *==============================================================================
- */
-
 //-- Includes ------------------------------------------------------------------
-#include "system_K1921VK035.h"
-#include "K1921VK035.h"
+#include "system_K1921VG015.h"
+#include <plic.h>
+#include <riscv-irq.h>
 
 //-- Variables -----------------------------------------------------------------
 uint32_t SystemCoreClock; // System Clock Frequency (Core Clock)
+uint32_t SystemPll0Clock; // System PLL0Clock Frequency
+uint32_t SystemPll1Clock; // System PLL1Clock Frequency
+uint32_t USBClock; 		  // USB Clock Frequency (USB PLL Clock)
+
+#define RCU_CLKSTAT_SRC_refclk RCU_SYSCLKCFG_SRC_refclk
+#define RCU_CLKSTAT_SRC_srcclk RCU_SYSCLKCFG_SRC_srcclk
+#define RCU_CLKSTAT_SRC_syspll0clk RCU_SYSCLKCFG_SRC_syspll0clk
+#define RCU_CLKSTAT_SRC_lsiclk RCU_SYSCLKCFG_SRC_lsiclk
 
 //-- Functions -----------------------------------------------------------------
 void SystemCoreClockUpdate(void)
 {
     uint32_t current_sysclk;
-    uint32_t pll_n, pll_m, pll_od, pll_refclk, pll_div = 1;
+    uint32_t pll_refclk, pll_refdiv, pll_frac, pll_fbdiv, pll_pd0a, pll_pd0b, pll_pd1a, pll_pd1b = 1;
+    current_sysclk = RCU->RCU_CLKSTAT_bit.RCU_CLKSTAT_SRC;
+  	pll_refclk = HSECLK_VAL;
+   	pll_fbdiv = RCU->RCU_PLLSYSCFG2_bit.RCU_PLLSYSCFG2_FBDIV;
+   	pll_refdiv = RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_REFDIV;
+   	pll_pd0a = RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_PD0A;
+   	pll_pd0b = RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_PD0B;
+   	pll_pd1a = RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_PD1A;
+   	pll_pd1b = RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_PD1B;
+   	if (RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_DSMEN) pll_frac = RCU->RCU_PLLSYSCFG1_bit.RCU_PLLSYSCFG1_FRAC;
+   	else pll_frac = 0;
 
-    current_sysclk = RCU->SYSCLKSTAT_bit.SYSSTAT;
-
+   	SystemPll0Clock = (pll_refclk * (pll_fbdiv+pll_frac/(1 << 24))) / (pll_refdiv * (1+pll_pd0a) * (1+pll_pd0b));
+   	SystemPll1Clock = (pll_refclk * (pll_fbdiv+pll_frac/(1 << 24))) / (pll_refdiv * (1+pll_pd1a) * (1+pll_pd1b));
     switch (current_sysclk) {
-    case RCU_SYSCLKSTAT_SYSSTAT_OSICLK:
-        SystemCoreClock = OSICLK_VAL;
+    case RCU_CLKSTAT_SRC_refclk:
+        SystemCoreClock = HSICLK_VAL;
         break;
-    case RCU_SYSCLKSTAT_SYSSTAT_OSECLK:
-        SystemCoreClock = OSECLK_VAL;
+    case RCU_CLKSTAT_SRC_srcclk:
+        SystemCoreClock = HSECLK_VAL;
         break;
-    case RCU_SYSCLKSTAT_SYSSTAT_PLLDIVCLK:
-    case RCU_SYSCLKSTAT_SYSSTAT_PLLCLK:
-        if (current_sysclk == RCU_SYSCLKSTAT_SYSSTAT_PLLDIVCLK)
-            pll_div = RCU->PLLDIV_bit.DIV + 1;
-        pll_n = RCU->PLLCFG_bit.N;
-        pll_m = RCU->PLLCFG_bit.M;
-        pll_od = RCU->PLLCFG_bit.OD;
-        if (RCU->PLLCFG_bit.REFSRC == RCU_PLLCFG_REFSRC_OSICLK)
-            pll_refclk = OSICLK_VAL;
-        else // RCU->PLLCFG_bit.REFSRC == RCU_PLLCFG_REFSRC_OSECLK
-            pll_refclk = OSECLK_VAL;
-        SystemCoreClock = (pll_refclk * pll_m) / (pll_n * (1 << pll_od) * pll_div);
+    case RCU_CLKSTAT_SRC_syspll0clk:
+    	SystemCoreClock = SystemPll0Clock;
+    	break;
+    case RCU_CLKSTAT_SRC_lsiclk:
+    	SystemCoreClock = LSICLK_VAL;
         break;
     }
+
 }
 
 void ClkInit()
@@ -61,106 +54,117 @@ void ClkInit()
     uint32_t timeout_counter = 0;
     uint32_t sysclk_source;
 
-//clockout control
-#if defined CKO_OSI
-    SIU->CLKOUTCTL = SIU_CLKOUTCTL_CLKOUTEN_Msk;
-    RCU->CLKOUTCFG = (RCU_CLKOUTCFG_CLKSEL_OSICLK << RCU_CLKOUTCFG_CLKSEL_Pos) |
-                     (RCU_CLKOUTCFG_CLKEN_Msk); //CKO = OSICLK
-#elif defined CKO_OSE && (OSECLK_VAL != 0)
-    SIU->CLKOUTCTL = SIU_CLKOUTCTL_CLKOUTEN_Msk;
-    RCU->CLKOUTCFG = (RCU_CLKOUTCFG_CLKSEL_OSECLK << RCU_CLKOUTCFG_CLKSEL_Pos) |
-                     (RCU_CLKOUTCFG_CLKEN_Msk); //CKO = OSECLK
-#elif defined CKO_PLL
-    SIU->CLKOUTCTL = SIU_CLKOUTCTL_CLKOUTEN_Msk;
-    RCU->CLKOUTCFG = (RCU_CLKOUTCFG_CLKSEL_PLLCLK << RCU_CLKOUTCFG_CLKSEL_Pos) |
-                     (1 << RCU_CLKOUTCFG_DIVN_Pos) |
-                     (RCU_CLKOUTCFG_DIVEN_Msk) |
-                     (RCU_CLKOUTCFG_CLKEN_Msk); //CKO = PLLCLK/4
-#endif
-
-//wait till external oscillator is ready
-#if defined OSECLK_VAL && (OSECLK_VAL != 0)
-    while ((!RCU->SYSCLKSTAT_bit.OSECLKOK) && (timeout_counter < OSECLK_STARTUP_TIMEOUT))
-        timeout_counter++;
-    if (timeout_counter == OSECLK_STARTUP_TIMEOUT) //OSE failed to startup
-        while (1) {
-        };
-#endif
-
 //select system clock
 #ifdef SYSCLK_PLL
-//PLLCLK = REFSRC * (M/N) * (1/(2^OD))
-#if (OSECLK_VAL == 8000000)
-    RCU->PLLCFG = (RCU_PLLCFG_REFSRC_OSECLK << RCU_PLLCFG_REFSRC_Pos) |
-                  (1 << RCU_PLLCFG_N_Pos) |
-                  (25 << RCU_PLLCFG_M_Pos);
-#elif (OSECLK_VAL == 12000000)
-    RCU->PLLCFG = (RCU_PLLCFG_REFSRC_OSECLK << RCU_PLLCFG_REFSRC_Pos) |
-                  (3 << RCU_PLLCFG_N_Pos) |
-                  (50 << RCU_PLLCFG_M_Pos);
-#elif (OSECLK_VAL == 16000000)
-    RCU->PLLCFG = (RCU_PLLCFG_REFSRC_OSECLK << RCU_PLLCFG_REFSRC_Pos) |
-                  (2 << RCU_PLLCFG_N_Pos) |
-                  (25 << RCU_PLLCFG_M_Pos);
-#elif (OSECLK_VAL == 20000000)
-    RCU->PLLCFG = (RCU_PLLCFG_REFSRC_OSECLK << RCU_PLLCFG_REFSRC_Pos) |
-                  (2 << RCU_PLLCFG_N_Pos) |
-                  (20 << RCU_PLLCFG_M_Pos);
-#elif (OSECLK_VAL == 24000000)
-    RCU->PLLCFG = (RCU_PLLCFG_REFSRC_OSECLK << RCU_PLLCFG_REFSRC_Pos) |
-                  (3 << RCU_PLLCFG_N_Pos) |
-                  (25 << RCU_PLLCFG_M_Pos);
-#elif defined OSICLK_VAL
-    RCU->PLLCFG = (RCU_PLLCFG_REFSRC_OSICLK << RCU_PLLCFG_REFSRC_Pos) |
-                  (1 << RCU_PLLCFG_N_Pos) |
-                  (25 << RCU_PLLCFG_M_Pos);
+//PLLCLK = REFCLK * (FBDIV+FRAC/2^24) / (REFDIV*(1+PD0A)*(1+PD0B))
+#if (HSECLK_VAL == 10000000)
+// Fout0 = 50 000 000 Hz
+// Fout1 = 10 000 000 Hz
+	RCU->RCU_PLLSYSCFG0_reg =( 9 << RCU_PLLSYSCFG0_PD1B_pos) |  //PD1B
+					 ( 4 << RCU_PLLSYSCFG0_PD1A_pos) |  //PD1A
+					 ( 4 << RCU_PLLSYSCFG0_PD0B_pos) |  //PD0B
+					 ( 1 << RCU_PLLSYSCFG0_PD0A_pos) |  //PD0A
+					 ( 2 << RCU_PLLSYSCFG0_REFDIV_pos) 	  |  //refdiv
+					 ( 0 << RCU_PLLSYSCFG0_FOUTEN_pos)    |  //fouten
+					 ( 0 << RCU_PLLSYSCFG0_DSMEN_pos)     |  //dsmen
+					 ( 1 << RCU_PLLSYSCFG0_DACEN_pos)     |  //dacen
+					 ( 3 << RCU_PLLSYSCFG0_BYP_pos)       |  //bypass
+					 ( 0 << RCU_PLLSYSCFG0_PLLEN_pos);       //en
+	RCU->RCU_PLLSYSCFG1_reg = 0;          //FRAC = 0					 
+	RCU->RCU_PLLSYSCFG2_reg = 100;         //FBDIV
+#elif (HSECLK_VAL == 12000000)
+// Fout0 = 50 000 000 Hz
+// Fout1 = 25 000 000 Hz
+	RCU->RCU_PLLSYSCFG0_reg =( 5 << RCU_PLLSYSCFG0_PD1B_pos) |  //PD1B
+					 ( 3 << RCU_PLLSYSCFG0_PD1A_pos) |  //PD1A
+					 ( 3 << RCU_PLLSYSCFG0_PD0B_pos) |  //PD0B
+					 ( 2 << RCU_PLLSYSCFG0_PD0A_pos) |  //PD0A
+					 ( 2 << RCU_PLLSYSCFG0_REFDIV_pos) 	  |  //refdiv
+					 ( 0 << RCU_PLLSYSCFG0_FOUTEN_pos)    |  //fouten
+					 ( 0 << RCU_PLLSYSCFG0_DSMEN_pos)     |  //dsmen
+					 ( 1 << RCU_PLLSYSCFG0_DACEN_pos)     |  //dacen
+					 ( 3 << RCU_PLLSYSCFG0_BYP_pos)       |  //bypass
+					 ( 0 << RCU_PLLSYSCFG0_PLLEN_pos);       //en
+	RCU->RCU_PLLSYSCFG1_reg = 0;          //FRAC = 0					 
+	RCU->RCU_PLLSYSCFG2_reg = 100;         //FBDIV
+#elif (HSECLK_VAL == 16000000)
+// Fout0 = 50 000 000 Hz
+// Fout1 = 12 500 000 Hz
+	RCU->RCU_PLLSYSCFG0_reg =( 7 << RCU_PLLSYSCFG0_PD1B_pos) |  //PD1B
+					 ( 7 << RCU_PLLSYSCFG0_PD1A_pos) |  //PD1A
+					 ( 1 << RCU_PLLSYSCFG0_PD0B_pos) |  //PD0B
+					 ( 3 << RCU_PLLSYSCFG0_PD0A_pos) |  //PD0A
+					 ( 2 << RCU_PLLSYSCFG0_REFDIV_pos) 	  |  //refdiv
+					 ( 0 << RCU_PLLSYSCFG0_FOUTEN_pos)    |  //fouten
+					 ( 0 << RCU_PLLSYSCFG0_DSMEN_pos)     |  //dsmen
+					 ( 0 << RCU_PLLSYSCFG0_DACEN_pos)     |  //dacen
+					 ( 3 << RCU_PLLSYSCFG0_BYP_pos)       |  //bypass
+					 ( 1 << RCU_PLLSYSCFG0_PLLEN_pos);       //en
+	RCU->RCU_PLLSYSCFG1_reg = 0;          //FRAC = 0					 
+	RCU->RCU_PLLSYSCFG2_reg = 50;         //FBDIV
+#elif (HSECLK_VAL == 20000000)
+// Fout0 = 50 000 000 Hz
+// Fout1 = 25 000 000 Hz
+	RCU->RCU_PLLSYSCFG0_reg =( 7 << RCU_PLLSYSCFG0_PD1B_pos) |  //PD1B
+					 ( 4 << RCU_PLLSYSCFG0_PD1A_pos) |  //PD1A
+					 ( 4 << RCU_PLLSYSCFG0_PD0B_pos) |  //PD0B
+					 ( 3 << RCU_PLLSYSCFG0_PD0A_pos) |  //PD0A
+					 ( 2 << RCU_PLLSYSCFG0_REFDIV_pos) 	  |  //refdiv
+					 ( 0 << RCU_PLLSYSCFG0_FOUTEN_pos)    |  //fouten
+					 ( 0 << RCU_PLLSYSCFG0_DSMEN_pos)     |  //dsmen
+					 ( 1 << RCU_PLLSYSCFG0_DACEN_pos)     |  //dacen
+					 ( 3 << RCU_PLLSYSCFG0_BYP_pos)       |  //bypass
+					 ( 0 << RCU_PLLSYSCFG0_PLLEN_pos);       //en
+	RCU->RCU_PLLSYSCFG1_reg = 0;          //FRAC = 0					 
+	RCU->RCU_PLLSYSCFG2_reg = 100;         //FBDIV
+#elif (HSECLK_VAL == 24000000)
+// Fout0 = 50 000 000 Hz
+// Fout1 = 30 000 000 Hz
+	RCU->RCU_PLLSYSCFG0_reg =( 7 << RCU_PLLSYSCFG0_PD1B_pos) |  //PD1B
+					 ( 4 << RCU_PLLSYSCFG0_PD1A_pos) |  //PD1A
+					 ( 2 << RCU_PLLSYSCFG0_PD0B_pos) |  //PD0B
+					 ( 3 << RCU_PLLSYSCFG0_PD0A_pos) |  //PD0A
+					 ( 2 << RCU_PLLSYSCFG0_REFDIV_pos) 	  |  //refdiv
+					 ( 0 << RCU_PLLSYSCFG0_FOUTEN_pos)    |  //fouten
+					 ( 0 << RCU_PLLSYSCFG0_DSMEN_pos)     |  //dsmen
+					 ( 1 << RCU_PLLSYSCFG0_DACEN_pos)     |  //dacen
+					 ( 3 << RCU_PLLSYSCFG0_BYP_pos)       |  //bypass
+					 ( 1 << RCU_PLLSYSCFG0_PLLEN_pos);       //en
+	RCU->RCU_PLLSYSCFG1_reg = 0;          //FRAC = 0					 
+	RCU->RCU_PLLSYSCFG2_reg = 65;         //FBDIV
 #else
-#error "Please define OSICLK_VAL and OSECLK_VAL with correct values!"
+#error "Please define HSECLK_VAL with correct values!"
 #endif
-    RCU->PLLCFG |= (1 << RCU_PLLCFG_OD_Pos) |
-                   (RCU_PLLCFG_OUTEN_Msk);
-    while (!RCU->PLLCFG_bit.LOCK) {
-    };
-    // additional waitstates
-    MFLASH->CTRL = (3 << MFLASH_CTRL_LAT_Pos);
-    //select PLL as source system clock
-    sysclk_source = RCU_SYSCLKCFG_SYSSEL_PLLCLK;
-#elif defined SYSCLK_OSI
-    sysclk_source = RCU_SYSCLKCFG_SYSSEL_OSICLK;
-#elif defined SYSCLK_OSE
-    sysclk_source = RCU_SYSCLKCFG_SYSSEL_OSECLK;
+	RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_FOUTEN = 1; 	// Fout0 Enable
+	//Waiting for PLL to stabilize
+    while (!RCU->RCU_PLLSYSSTAT_bit.RCU_PLLSYSSTAT_LOCK);
+      
+        //select PLL as source system clock
+	sysclk_source = RCU_SYSCLKCFG_SRC_syspll0clk;
+
+#elif defined SYSCLK_HSI
+    sysclk_source = RCU_SYSCLKCFG_SRC_REFCLK;
+#elif defined SYSCLK_HSE
+    sysclk_source = RCU_SYSCLKCFG_SRC_SRCCLK;
+#elif defined SYSCLK_LSI
+    sysclk_source = RCU_SYSCLKCFG_SRC_LSICLK;
 #else
-#error "Please define SYSCLK source (SYSCLK_PLL | SYSCLK_OSI | SYSCLK_OSE)!"
+#error "Please define SYSCLK source (SYSCLK_PLL | SYSCLK_HSE | SYSCLK_HSI | SYSCLK_LSI)!"
 #endif
 
     //switch sysclk
-    RCU->SYSCLKCFG = (sysclk_source << RCU_SYSCLKCFG_SYSSEL_Pos);
+    RCU->RCU_SYSCLKCFG_reg = (sysclk_source << RCU_SYSCLKCFG_SRC_pos);
     // Wait switching done
-    timeout_counter = 0;
-    while ((RCU->SYSCLKSTAT_bit.SYSSTAT != RCU->SYSCLKCFG_bit.SYSSEL) && (timeout_counter < SYSCLK_SWITCH_TIMEOUT))
-        timeout_counter++;
-    if (timeout_counter == SYSCLK_SWITCH_TIMEOUT) //SYSCLK failed to switch
-        while (1) {
-        };
-
-    //flush and enable cache
-    MFLASH->CTRL_bit.IFLUSH = 1;
-    while (MFLASH->ICSTAT_bit.BUSY) {
-    };
-    MFLASH->CTRL_bit.DFLUSH = 1;
-    while (MFLASH->DCSTAT_bit.BUSY) {
-    };
-    MFLASH->CTRL |= (MFLASH_CTRL_DCEN_Msk) | (MFLASH_CTRL_ICEN_Msk) | (MFLASH_CTRL_PEN_Msk);
+    while ((RCU->RCU_CLKSTAT_bit.RCU_CLKSTAT_SRC != RCU->RCU_SYSCLKCFG_bit.RCU_SYSCLKCFG_SRC ))
+      ;
 }
 
-void FPUInit()
-{
-    SCB->CPACR = 0x00F00000;
-    __DSB();
-    __ISB();
-}
+
 void SystemInit(void)
 {
-    ClkInit();
-    FPUInit();
+  riscv_irq_init();
+  PLIC_Init();
+  ClkInit();
+  SystemCoreClockUpdate();
 }
+
