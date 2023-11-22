@@ -49,122 +49,156 @@ void SystemCoreClockUpdate(void)
 
 }
 
-void ClkInit()
-{
-    uint32_t timeout_counter = 0;
-    uint32_t sysclk_source;
+// void clk_init()
+// {
+//     uint32_t timeout_counter = 0;
+//     uint32_t sysclk_source;
 
-//select system clock
-#ifdef SYSCLK_PLL
-//PLLCLK = REFCLK * (FBDIV+FRAC/2^24) / (REFDIV*(1+PD0A)*(1+PD0B))
-#if (HSECLK_VAL == 10000000)
-// Fout0 = 50 000 000 Hz
-// Fout1 = 10 000 000 Hz
-	RCU->RCU_PLLSYSCFG0_reg =( 9 << RCU_PLLSYSCFG0_PD1B_pos) |  //PD1B
-					 ( 4 << RCU_PLLSYSCFG0_PD1A_pos) |  //PD1A
-					 ( 4 << RCU_PLLSYSCFG0_PD0B_pos) |  //PD0B
-					 ( 1 << RCU_PLLSYSCFG0_PD0A_pos) |  //PD0A
-					 ( 2 << RCU_PLLSYSCFG0_REFDIV_pos) 	  |  //refdiv
-					 ( 0 << RCU_PLLSYSCFG0_FOUTEN_pos)    |  //fouten
-					 ( 0 << RCU_PLLSYSCFG0_DSMEN_pos)     |  //dsmen
-					 ( 1 << RCU_PLLSYSCFG0_DACEN_pos)     |  //dacen
-					 ( 3 << RCU_PLLSYSCFG0_BYP_pos)       |  //bypass
-					 ( 0 << RCU_PLLSYSCFG0_PLLEN_pos);       //en
-	RCU->RCU_PLLSYSCFG1_reg = 0;          //FRAC = 0					 
-	RCU->RCU_PLLSYSCFG2_reg = 100;         //FBDIV
-#elif (HSECLK_VAL == 12000000)
-// Fout0 = 50 000 000 Hz
-// Fout1 = 25 000 000 Hz
-	RCU->RCU_PLLSYSCFG0_reg =( 5 << RCU_PLLSYSCFG0_PD1B_pos) |  //PD1B
-					 ( 3 << RCU_PLLSYSCFG0_PD1A_pos) |  //PD1A
-					 ( 3 << RCU_PLLSYSCFG0_PD0B_pos) |  //PD0B
-					 ( 2 << RCU_PLLSYSCFG0_PD0A_pos) |  //PD0A
-					 ( 2 << RCU_PLLSYSCFG0_REFDIV_pos) 	  |  //refdiv
-					 ( 0 << RCU_PLLSYSCFG0_FOUTEN_pos)    |  //fouten
-					 ( 0 << RCU_PLLSYSCFG0_DSMEN_pos)     |  //dsmen
-					 ( 1 << RCU_PLLSYSCFG0_DACEN_pos)     |  //dacen
-					 ( 3 << RCU_PLLSYSCFG0_BYP_pos)       |  //bypass
-					 ( 0 << RCU_PLLSYSCFG0_PLLEN_pos);       //en
-	RCU->RCU_PLLSYSCFG1_reg = 0;          //FRAC = 0					 
-	RCU->RCU_PLLSYSCFG2_reg = 100;         //FBDIV
-#elif (HSECLK_VAL == 16000000)
-// Fout0 = 50 000 000 Hz
-// Fout1 = 12 500 000 Hz
-	RCU->RCU_PLLSYSCFG0_reg =( 7 << RCU_PLLSYSCFG0_PD1B_pos) |  //PD1B
-					 ( 7 << RCU_PLLSYSCFG0_PD1A_pos) |  //PD1A
-					 ( 1 << RCU_PLLSYSCFG0_PD0B_pos) |  //PD0B
-					 ( 3 << RCU_PLLSYSCFG0_PD0A_pos) |  //PD0A
-					 ( 2 << RCU_PLLSYSCFG0_REFDIV_pos) 	  |  //refdiv
-					 ( 0 << RCU_PLLSYSCFG0_FOUTEN_pos)    |  //fouten
-					 ( 0 << RCU_PLLSYSCFG0_DSMEN_pos)     |  //dsmen
-					 ( 0 << RCU_PLLSYSCFG0_DACEN_pos)     |  //dacen
-					 ( 3 << RCU_PLLSYSCFG0_BYP_pos)       |  //bypass
-					 ( 1 << RCU_PLLSYSCFG0_PLLEN_pos);       //en
-	RCU->RCU_PLLSYSCFG1_reg = 0;          //FRAC = 0					 
-	RCU->RCU_PLLSYSCFG2_reg = 50;         //FBDIV
-#elif (HSECLK_VAL == 20000000)
-// Fout0 = 50 000 000 Hz
-// Fout1 = 25 000 000 Hz
-	RCU->RCU_PLLSYSCFG0_reg =( 7 << RCU_PLLSYSCFG0_PD1B_pos) |  //PD1B
-					 ( 4 << RCU_PLLSYSCFG0_PD1A_pos) |  //PD1A
-					 ( 4 << RCU_PLLSYSCFG0_PD0B_pos) |  //PD0B
-					 ( 3 << RCU_PLLSYSCFG0_PD0A_pos) |  //PD0A
-					 ( 2 << RCU_PLLSYSCFG0_REFDIV_pos) 	  |  //refdiv
-					 ( 0 << RCU_PLLSYSCFG0_FOUTEN_pos)    |  //fouten
-					 ( 0 << RCU_PLLSYSCFG0_DSMEN_pos)     |  //dsmen
-					 ( 1 << RCU_PLLSYSCFG0_DACEN_pos)     |  //dacen
-					 ( 3 << RCU_PLLSYSCFG0_BYP_pos)       |  //bypass
-					 ( 0 << RCU_PLLSYSCFG0_PLLEN_pos);       //en
-	RCU->RCU_PLLSYSCFG1_reg = 0;          //FRAC = 0					 
-	RCU->RCU_PLLSYSCFG2_reg = 100;         //FBDIV
-#elif (HSECLK_VAL == 24000000)
-// Fout0 = 50 000 000 Hz
-// Fout1 = 30 000 000 Hz
-	RCU->RCU_PLLSYSCFG0_reg =( 7 << RCU_PLLSYSCFG0_PD1B_pos) |  //PD1B
-					 ( 4 << RCU_PLLSYSCFG0_PD1A_pos) |  //PD1A
-					 ( 2 << RCU_PLLSYSCFG0_PD0B_pos) |  //PD0B
-					 ( 3 << RCU_PLLSYSCFG0_PD0A_pos) |  //PD0A
-					 ( 2 << RCU_PLLSYSCFG0_REFDIV_pos) 	  |  //refdiv
-					 ( 0 << RCU_PLLSYSCFG0_FOUTEN_pos)    |  //fouten
-					 ( 0 << RCU_PLLSYSCFG0_DSMEN_pos)     |  //dsmen
-					 ( 1 << RCU_PLLSYSCFG0_DACEN_pos)     |  //dacen
-					 ( 3 << RCU_PLLSYSCFG0_BYP_pos)       |  //bypass
-					 ( 1 << RCU_PLLSYSCFG0_PLLEN_pos);       //en
-	RCU->RCU_PLLSYSCFG1_reg = 0;          //FRAC = 0					 
-	RCU->RCU_PLLSYSCFG2_reg = 65;         //FBDIV
-#else
-#error "Please define HSECLK_VAL with correct values!"
-#endif
-	RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_FOUTEN = 1; 	// Fout0 Enable
-	//Waiting for PLL to stabilize
-    while (!RCU->RCU_PLLSYSSTAT_bit.RCU_PLLSYSSTAT_LOCK);
+// //select system clock
+// #ifdef SYSCLK_PLL
+// //PLLCLK = REFCLK * (FBDIV+FRAC/2^24) / (REFDIV*(1+PD0A)*(1+PD0B))
+// #if (HSECLK_VAL == 10000000)
+// // Fout0 = 50 000 000 Hz
+// // Fout1 = 10 000 000 Hz
+// 	RCU->RCU_PLLSYSCFG0_reg =( 9 << RCU_PLLSYSCFG0_PD1B_pos) |  //PD1B
+// 					 ( 4 << RCU_PLLSYSCFG0_PD1A_pos) |  //PD1A
+// 					 ( 4 << RCU_PLLSYSCFG0_PD0B_pos) |  //PD0B
+// 					 ( 1 << RCU_PLLSYSCFG0_PD0A_pos) |  //PD0A
+// 					 ( 2 << RCU_PLLSYSCFG0_REFDIV_pos) 	  |  //refdiv
+// 					 ( 0 << RCU_PLLSYSCFG0_FOUTEN_pos)    |  //fouten
+// 					 ( 0 << RCU_PLLSYSCFG0_DSMEN_pos)     |  //dsmen
+// 					 ( 1 << RCU_PLLSYSCFG0_DACEN_pos)     |  //dacen
+// 					 ( 3 << RCU_PLLSYSCFG0_BYP_pos)       |  //bypass
+// 					 ( 0 << RCU_PLLSYSCFG0_PLLEN_pos);       //en
+// 	RCU->RCU_PLLSYSCFG1_reg = 0;          //FRAC = 0					 
+// 	RCU->RCU_PLLSYSCFG2_reg = 100;         //FBDIV
+// #elif (HSECLK_VAL == 12000000)
+// // Fout0 = 50 000 000 Hz
+// // Fout1 = 25 000 000 Hz
+// 	RCU->RCU_PLLSYSCFG0_reg =( 5 << RCU_PLLSYSCFG0_PD1B_pos) |  //PD1B
+// 					 ( 3 << RCU_PLLSYSCFG0_PD1A_pos) |  //PD1A
+// 					 ( 3 << RCU_PLLSYSCFG0_PD0B_pos) |  //PD0B
+// 					 ( 2 << RCU_PLLSYSCFG0_PD0A_pos) |  //PD0A
+// 					 ( 2 << RCU_PLLSYSCFG0_REFDIV_pos) 	  |  //refdiv
+// 					 ( 0 << RCU_PLLSYSCFG0_FOUTEN_pos)    |  //fouten
+// 					 ( 0 << RCU_PLLSYSCFG0_DSMEN_pos)     |  //dsmen
+// 					 ( 1 << RCU_PLLSYSCFG0_DACEN_pos)     |  //dacen
+// 					 ( 3 << RCU_PLLSYSCFG0_BYP_pos)       |  //bypass
+// 					 ( 0 << RCU_PLLSYSCFG0_PLLEN_pos);       //en
+// 	RCU->RCU_PLLSYSCFG1_reg = 0;          //FRAC = 0					 
+// 	RCU->RCU_PLLSYSCFG2_reg = 100;         //FBDIV
+// #elif (HSECLK_VAL == 16000000)
+// // Fout0 = 50 000 000 Hz
+// // Fout1 = 12 500 000 Hz
+// 	RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_PLLEN = 0;
+// 	RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_FOUTEN = 0; 
+// 	RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_DACEN = 0;
+// 	RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_DSMEN = 0;
+// 	RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_BYP = 0;
+// 	RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_REFDIV = 2;
+
+// 	RCU->RCU_PLLSYSCFG2_bit.RCU_PLLSYSCFG2_FBDIV = 50;
+// 	RCU->RCU_PLLSYSCFG1_bit.RCU_PLLSYSCFG1_FRAC = 0;
+
+		
+// 	RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_PD0A = 3;
+// 	RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_PD0B = 1;
+// 	RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_PD1A = 7;
+// 	RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_PD1B = 7;
+
+	
+// #elif (HSECLK_VAL == 20000000)
+// // Fout0 = 50 000 000 Hz
+// // Fout1 = 25 000 000 Hz
+// 	RCU->RCU_PLLSYSCFG0_reg =( 7 << RCU_PLLSYSCFG0_PD1B_pos) |  //PD1B
+// 					 ( 4 << RCU_PLLSYSCFG0_PD1A_pos) |  //PD1A
+// 					 ( 4 << RCU_PLLSYSCFG0_PD0B_pos) |  //PD0B
+// 					 ( 3 << RCU_PLLSYSCFG0_PD0A_pos) |  //PD0A
+// 					 ( 2 << RCU_PLLSYSCFG0_REFDIV_pos) 	  |  //refdiv
+// 					 ( 0 << RCU_PLLSYSCFG0_FOUTEN_pos)    |  //fouten
+// 					 ( 0 << RCU_PLLSYSCFG0_DSMEN_pos)     |  //dsmen
+// 					 ( 1 << RCU_PLLSYSCFG0_DACEN_pos)     |  //dacen
+// 					 ( 3 << RCU_PLLSYSCFG0_BYP_pos)       |  //bypass
+// 					 ( 0 << RCU_PLLSYSCFG0_PLLEN_pos);       //en
+// 	RCU->RCU_PLLSYSCFG1_reg = 0;          //FRAC = 0					 
+// 	RCU->RCU_PLLSYSCFG2_reg = 100;         //FBDIV
+// #elif (HSECLK_VAL == 24000000)
+// // Fout0 = 50 000 000 Hz
+// // Fout1 = 30 000 000 Hz
+// 	RCU->RCU_PLLSYSCFG0_reg =( 7 << RCU_PLLSYSCFG0_PD1B_pos) |  //PD1B
+// 					 ( 4 << RCU_PLLSYSCFG0_PD1A_pos) |  //PD1A
+// 					 ( 2 << RCU_PLLSYSCFG0_PD0B_pos) |  //PD0B
+// 					 ( 3 << RCU_PLLSYSCFG0_PD0A_pos) |  //PD0A
+// 					 ( 2 << RCU_PLLSYSCFG0_REFDIV_pos) 	  |  //refdiv
+// 					 ( 0 << RCU_PLLSYSCFG0_FOUTEN_pos)    |  //fouten
+// 					 ( 0 << RCU_PLLSYSCFG0_DSMEN_pos)     |  //dsmen
+// 					 ( 1 << RCU_PLLSYSCFG0_DACEN_pos)     |  //dacen
+// 					 ( 3 << RCU_PLLSYSCFG0_BYP_pos)       |  //bypass
+// 					 ( 0 << RCU_PLLSYSCFG0_PLLEN_pos);       //en
+// 	RCU->RCU_PLLSYSCFG1_reg = 0;          //FRAC = 0					 
+// 	RCU->RCU_PLLSYSCFG2_reg = 65;         //FBDIV
+// #else
+// #error "Please define HSECLK_VAL with correct values!"
+// #endif
+// 	RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_PLLEN = 1; 	// PLL Enable
+// 	RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_FOUTEN = 1; 	// Fout0 Enable
+// 	//Waiting for PLL to stabilize
+//     while (!RCU->RCU_PLLSYSSTAT_bit.RCU_PLLSYSSTAT_LOCK);
       
-        //select PLL as source system clock
-	sysclk_source = RCU_SYSCLKCFG_SRC_syspll0clk;
+//         //select PLL as source system clock
+// 	sysclk_source = RCU_SYSCLKCFG_SRC_syspll0clk;
 
-#elif defined SYSCLK_HSI
-    sysclk_source = RCU_SYSCLKCFG_SRC_REFCLK;
-#elif defined SYSCLK_HSE
-    sysclk_source = RCU_SYSCLKCFG_SRC_SRCCLK;
-#elif defined SYSCLK_LSI
-    sysclk_source = RCU_SYSCLKCFG_SRC_LSICLK;
-#else
-#error "Please define SYSCLK source (SYSCLK_PLL | SYSCLK_HSE | SYSCLK_HSI | SYSCLK_LSI)!"
-#endif
+// #elif defined SYSCLK_HSI
+//     sysclk_source = RCU_SYSCLKCFG_SRC_REFCLK;
+// #elif defined SYSCLK_HSE
+//     sysclk_source = RCU_SYSCLKCFG_SRC_SRCCLK;
+// #elif defined SYSCLK_LSI
+//     sysclk_source = RCU_SYSCLKCFG_SRC_LSICLK;
+// #else
+// #error "Please define SYSCLK source (SYSCLK_PLL | SYSCLK_HSE | SYSCLK_HSI | SYSCLK_LSI)!"
+// #endif
 
-    //switch sysclk
-    RCU->RCU_SYSCLKCFG_reg = (sysclk_source << RCU_SYSCLKCFG_SRC_pos);
-    // Wait switching done
+//     //switch sysclk
+//     RCU->RCU_SYSCLKCFG_reg = (sysclk_source << RCU_SYSCLKCFG_SRC_pos);
+//     // Wait switching done
+//     while ((RCU->RCU_CLKSTAT_bit.RCU_CLKSTAT_SRC != RCU->RCU_SYSCLKCFG_bit.RCU_SYSCLKCFG_SRC ))
+//       ;
+// }
+
+void clk_init(){
+    //HSECLK = 16 MHz
+    //Set up PLL at 50 MHz
+    RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_REFDIV = 1;
+    RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_BYP = 0;
+    RCU->RCU_PLLSYSCFG2_bit.RCU_PLLSYSCFG2_FBDIV = 25;
+    RCU->RCU_PLLSYSCFG1_bit.RCU_PLLSYSCFG1_FRAC = 0;
+
+    RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_PLLEN = 1;
+    RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_DSMEN = 0;
+    RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_PD0A = 3;
+    RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_PD0B = 1;
+    RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_PD1A = 3;
+    RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_PD1B = 1;
+    RCU->RCU_PLLSYSCFG0_bit.RCU_PLLSYSCFG0_FOUTEN = 1;
+
+    
+    
+    //Waiting for PLL to stabilize
+    while (!RCU->RCU_PLLSYSSTAT_bit.RCU_PLLSYSSTAT_LOCK);
+    // Set the number of waitstate for the flash drive = 4 (4*30 = 120 MHz max)
+    //MFLASH->CTRL = 3 << MFLASH_CTRL_LAT_Pos;
+    // Change system frequency to PLL
+    RCU->RCU_SYSCLKCFG_bit.RCU_SYSCLKCFG_SRC = RCU_SYSCLKCFG_SRC_syspll0clk;
     while ((RCU->RCU_CLKSTAT_bit.RCU_CLKSTAT_SRC != RCU->RCU_SYSCLKCFG_bit.RCU_SYSCLKCFG_SRC ))
       ;
 }
-
 
 void SystemInit(void)
 {
   riscv_irq_init();
   PLIC_Init();
-  ClkInit();
+  PLIC_SetThreshold (Plic_Mach_Target, 0);
+  clk_init();
   SystemCoreClockUpdate();
 }
 
