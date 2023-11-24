@@ -120,6 +120,9 @@ SECTIONS
         *(.data .data.*)
         *(.gnu.linkonce.d.*)
         . = ALIGN(4);
+        /*__global_pointer$ - 12bit offset from start of .sdata section, used for Linker Relaxation. 
+          Should be written to the gp register
+        */
         PROVIDE( __global_pointer$ = . + 0x800 );
         *(.sdata .sdata.* .sdata2.*)
         *(.gnu.linkonce.s.*)
@@ -133,7 +136,7 @@ SECTIONS
 
     .bss (NOLOAD): ALIGN(4) {
         __bss_start = .;
-        *(.sbss*)
+        *(.sbss*) /* Must be located immediately after the .sdata section */
         *(.gnu.linkonce.sb.*)
         *(.bss .bss.*)
         *(.gnu.linkonce.b.*)
