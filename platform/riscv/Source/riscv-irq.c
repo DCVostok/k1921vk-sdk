@@ -6,7 +6,8 @@
 // machine irq handler
 static void irq_entry(void) __attribute__((interrupt("machine"), optimize("align-functions=4"), section(".text.irq_entry_align16")));
 
-irqfunc_t* riscv_handler_map[RISCV_IRQ_NUMS];
+irqfunc_t* riscv_irq_handler_map[RISCV_IRQ_NUMS];
+irqfunc_t* riscv_exception_handler_map[RISCV_EXCP_NUMS];
 
 void riscv_irq_init(void) { 
 	riscv_irq_global_disable(); 
@@ -38,6 +39,15 @@ void riscv_irq_global_disable(void)
 {
     //clear_csr(mstatus, MSTATUS_MPIE);
     csr_clr_bits_mstatus(MSTATUS_MIE_BIT_MASK);
+}
+
+void riscv_irq_rise_msi(void){
+	volatile uint32_t *msip0= (volatile uint32_t *)(RISCV_CLINT_MSIP0_ADDR);
+	*msip0 = 0x1;
+}
+void riscv_irq_clear_msi(void){
+	volatile uint32_t *msip0= (volatile uint32_t *)(RISCV_CLINT_MSIP0_ADDR);
+	*msip0 = 0x0;
 }
 
 // #pragma GCC push_options
@@ -79,8 +89,8 @@ void irq_entry (void)
 	} else {
 		//handle interrupt
 		this_cause &= 0xFF;
-		if(riscv_handler_map[this_cause] != 0) {
-                  riscv_handler_map[this_cause]();
+		if(riscv_irq_handler_map[this_cause] != 0) {
+                  riscv_irq_handler_map[this_cause]();
 		}else{
 			while(1) {}; //NO handler
 		}

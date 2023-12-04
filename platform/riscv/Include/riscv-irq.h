@@ -2,6 +2,13 @@
 #define RISCV_IRQ_H
 
 typedef void irqfunc_t(void);
+
+#ifndef RISCV_CLINT_ADDR
+#define RISCV_CLINT_ADDR 0x2000000UL
+#endif
+
+#define RISCV_CLINT_MSIP0_ADDR (RISCV_CLINT_ADDR + 0)
+
 enum {
     RISCV_IRQ_MSI = 3,
     RISCV_IRQ_MTI = 7,
@@ -15,6 +22,7 @@ enum {
 };
 
 #define RISCV_IRQ_NUMS (RISCV_IRQ_MEI+1)
+
 
 enum {
     RISCV_IRQ_MASK_MSI = (1UL<<RISCV_IRQ_MSI),
@@ -47,11 +55,15 @@ enum {
     RISCV_EXCP_STORE_AMO_PAGE_FAULT=15,	/* Store/AMO page fault */
 };
 
+#define RISCV_EXCP_NUMS (RISCV_EXCP_STORE_AMO_PAGE_FAULT+1)
+
 void riscv_irq_init(void);
 void riscv_irq_enable(unsigned int irq);
 void riscv_irq_disable(unsigned int irq);
 void riscv_irq_set_handler(unsigned int irq, irqfunc_t *handler);
 void riscv_irq_global_enable(void);
 void riscv_irq_global_disable(void);
-
+void riscv_irq_global_disable(void);
+void riscv_irq_rise_msi(void);
+void riscv_irq_clear_msi(void);
 #endif /* RISCV_IRQERRUPTS_H */
