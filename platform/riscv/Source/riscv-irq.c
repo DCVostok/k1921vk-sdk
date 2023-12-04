@@ -25,7 +25,7 @@ void riscv_irq_disable(unsigned int irq_num){
 }
 
 void riscv_irq_set_handler(unsigned int irq_num, irqfunc_t *handler){
-  riscv_handler_map[irq_num] = handler;
+  riscv_irq_handler_map[irq_num] = handler;
 }
 
 void riscv_irq_global_enable(void)
