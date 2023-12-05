@@ -54,7 +54,7 @@ void riscv_irq_clear_msi(void){
     *msip0 = 0x0;
 }
 
-void _default_exception_handler(exceptio)
+void _default_exception_handler(uint16_t except_num)
 {
 
     while(1) {};
@@ -66,7 +66,7 @@ void irq_entry (void)
 
     if((this_cause & MCAUSE_INTERRUPT_BIT_MASK) == 0) {
         // handle exception
-        this_cause = this_cause & MCAUSE_EXCEPTION_CODE_BIT_MASK;
+        this_cause &= 0xFF;
         if (this_cause >= RISCV_EXCP_NUMS) {
             while (1){}//error
         }
