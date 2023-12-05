@@ -61,6 +61,8 @@ void riscv_irq_init(void);
 void riscv_irq_enable(unsigned int irq);
 void riscv_irq_disable(unsigned int irq);
 void riscv_irq_set_handler(unsigned int irq, irqfunc_t *handler);
+void riscv_exception_set_handler(unsigned int exception_num,
+                                 irqfunc_t *handler);
 void riscv_irq_global_enable(void);
 void riscv_irq_global_disable(void);
 void riscv_irq_global_disable(void);
