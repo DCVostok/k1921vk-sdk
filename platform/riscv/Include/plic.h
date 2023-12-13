@@ -11,6 +11,7 @@
 
 #include "stdint.h"
 #include "riscv-irq.h"
+#include "plic_config.h"
 #define __I     volatile const                /*!< defines 'read only' permissions      */
 #define __O     volatile                      /*!< defines 'write only' permissions     */
 #define __IO    volatile                      /*!< defines 'read / write' permissions   */

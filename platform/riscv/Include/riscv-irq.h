@@ -1,10 +1,11 @@
 #ifndef RISCV_IRQ_H
 #define RISCV_IRQ_H
 
+#include <clint_config.h>
 typedef void irqfunc_t(void);
 
 #ifndef RISCV_CLINT_ADDR
-#define RISCV_CLINT_ADDR 0x2000000UL
+#error "RISCV_CLINT_ADDR not defined"
 #endif
 
 #define RISCV_CLINT_MSIP0_ADDR (RISCV_CLINT_ADDR + 0)

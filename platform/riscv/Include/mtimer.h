@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <riscv-irq.h>
+#include <clint_config.h>
 
 #ifndef RISCV_CLINT_ADDR
 #error "RISCV_CLINT_ADDR not defined"
