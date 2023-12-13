@@ -8,7 +8,14 @@ extern "C" {
 //-- Includes ------------------------------------------------------------------
 #include <stdint.h>
 #include <K1921VG015.h>
+#ifdef __EMBOX__
+#include <framework/mod/options.h>
+#include <module/embox/arch/system.h>
+#include <module/third_party/bsp/niiet/k1921vg015_system.h>
 
+#define HSECLK_VAL OPTION_MODULE_GET(third_party__bsp__niiet__k1921vg015_system,NUMBER,external_clk_freq)
+#define SYSCLK_PLL
+#endif
 
 //-- Defines -------------------------------------------------------------------
 #ifdef EXTCLK_FREQ

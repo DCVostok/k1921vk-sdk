@@ -1,8 +1,9 @@
 //-- Includes ------------------------------------------------------------------
 #include "system_K1921VG015.h"
+#ifndef __EMBOX__
 #include <plic.h>
 #include <riscv-irq.h>
-
+#endif
 //-- Variables -----------------------------------------------------------------
 uint32_t SystemCoreClock; // System Clock Frequency (Core Clock)
 uint32_t SystemPll0Clock; // System PLL0Clock Frequency

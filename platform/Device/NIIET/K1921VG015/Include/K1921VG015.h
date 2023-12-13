@@ -98,13 +98,9 @@ typedef enum {
 #define PLIC_CMP_VECTNUM        30
 #define PLIC_PMURTC_VECTNUM     31
 
-#include <plic.h>
-
-#include "riscv-irq.h"
-#include "riscv-csr.h"
 
 #define RISCV_CLINT_ADDR 0x2000000UL
-
-#include <mtimer.h>
+#define RISCV_MTIMECMP_ADDR (RISCV_CLINT_ADDR + 0x4000UL)
+#define RISCV_MTIME_ADDR (RISCV_CLINT_ADDR + 0xBFF8UL)
 
 #endif//K1921VG015_H

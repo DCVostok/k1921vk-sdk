@@ -44,7 +44,7 @@ enum Plic_Target {
     E_PLIC_USER_TARGET
 };
 #ifndef PLIC_NUM_VECTORS
-    #define PLIC_NUM_VECTORS 32
+    #error "PLIC_NUM_VECTORS not defined"
 #endif
 
 
