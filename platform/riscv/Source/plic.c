@@ -3,31 +3,8 @@
 #include "riscv-irq.h"
 // pointers to handler functions for machine mode
 irqfunc_t* mach_plic_handler[PLIC_NUM_VECTORS];
-// pointers to handler functions for supervisor mode
-irqfunc_t* supervisor_plic_handler[PLIC_NUM_VECTORS];
-
-typedef struct {
-    __IO uint32_t PRI[32];
-    uint32_t Reserved1[992];
-    __O uint32_t INT_PEND;
-    uint32_t Reserved2[1023];
-    __IO uint32_t M_INTEN;
-    uint32_t Reserved3[31];
-    __IO uint32_t U_INTEN;
-    uint32_t Reserved4[2015];
-    __O uint32_t NINT;
-    __O uint32_t NPRI;
-    uint32_t Reserved5[520190];
-    __IO uint32_t MTHR;
-    __IO uint32_t MICC;
-    uint32_t Reserved6[1022];
-    __IO uint32_t UTHR;
-    __IO uint32_t UICC;
-
-} PLIC_TypeDef;
-
-#define PLIC_BASE (0x0C000000UL)
-#define PLIC      ((volatile PLIC_TypeDef*)PLIC_BASE)
+// pointers to handler functions for user mode
+irqfunc_t* user_plic_handler[PLIC_NUM_VECTORS];
 
 // private functions
 uint32_t PLIC_ClaimIrq(uint8_t target);
@@ -40,11 +17,11 @@ void PLIC_Init(void) {
     riscv_irq_disable(RISCV_IRQ_MEI);
     for (int i = 0; i < PLIC_NUM_VECTORS; i++) {
         PLIC_SetPriority(i, 0);
-        PLIC_IntDisable(Plic_Mach_Target, i);
-        PLIC_IntDisable(Plic_SuperVisor_Target, i);
+        PLIC_IntDisable(E_PLIC_MACHINE_TARGET, i);
+        PLIC_IntDisable(E_PLIC_USER_TARGET, i);
     }
-    PLIC_SetThreshold(Plic_Mach_Target, 0);
-    PLIC_SetThreshold(Plic_SuperVisor_Target, 0);
+    PLIC_SetThreshold(E_PLIC_MACHINE_TARGET, 0);
+    PLIC_SetThreshold(E_PLIC_USER_TARGET, 0);
     riscv_irq_set_handler(RISCV_IRQ_MEI, PLIC_MachHandler);
     riscv_irq_enable(RISCV_IRQ_MEI);
     return;
@@ -55,10 +32,10 @@ void PLIC_Init(void) {
  */
 
 void PLIC_SetIrqHandler(uint8_t target, uint32_t isr_num, irqfunc_t* func) {
-    if (target == Plic_Mach_Target) {
+    if (target == E_PLIC_MACHINE_TARGET) {
         mach_plic_handler[isr_num] = func;
     } else {
-        supervisor_plic_handler[isr_num] = func;
+        user_plic_handler[isr_num] = func;
     }
 }
 
@@ -88,7 +65,7 @@ void PLIC_IntEnable(uint8_t target, uint32_t isr_num) {
 
     //read - modify - write operation
 
-    if (target == Plic_Mach_Target) {
+    if (target == E_PLIC_MACHINE_TARGET) {
         value = PLIC->M_INTEN;
         value |= (1 << isr_num);
         PLIC->M_INTEN = value;
@@ -108,7 +85,7 @@ void PLIC_IntDisable(uint8_t target, uint32_t isr_num) {
 
     //read - modify - write operation
 
-    if (target == Plic_Mach_Target) {
+    if (target == E_PLIC_MACHINE_TARGET) {
         value = PLIC->M_INTEN;
         value &= ~(1 << isr_num);
         PLIC->M_INTEN = value;
@@ -124,7 +101,7 @@ void PLIC_IntDisable(uint8_t target, uint32_t isr_num) {
  */
 
 uint32_t PLIC_ClaimIrq(uint8_t target) {
-    if (target == Plic_Mach_Target) {
+    if (target == E_PLIC_MACHINE_TARGET) {
         return (uint32_t)(PLIC->MICC);
     } else {
         return (uint32_t)(PLIC->UICC);
@@ -136,7 +113,7 @@ uint32_t PLIC_ClaimIrq(uint8_t target) {
  */
 
 void PLIC_ClaimComplete(uint8_t target, uint32_t isrnum) {
-    if (target == Plic_Mach_Target) {
+    if (target == E_PLIC_MACHINE_TARGET) {
         PLIC->MICC = isrnum;
     } else {
         PLIC->UICC = isrnum;
@@ -148,7 +125,7 @@ void PLIC_ClaimComplete(uint8_t target, uint32_t isrnum) {
  */
 
 void PLIC_SetThreshold(uint8_t target, uint32_t value) {
-    if (target == Plic_Mach_Target) {
+    if (target == E_PLIC_MACHINE_TARGET) {
         PLIC->MTHR = value;
     } else {
         PLIC->UTHR = value;
@@ -158,12 +135,13 @@ void PLIC_SetThreshold(uint8_t target, uint32_t value) {
 void PLIC_MachHandler(void) {
 
     // handle interrupt
-    uint32_t isr_num = PLIC->MICC;
-    // check if handler exist
-    if (mach_plic_handler[isr_num] != NULL_IRQ) {
-        // call isr handler
-        mach_plic_handler[isr_num]();
-        // set isr completes
+    uint32_t isr_num;
+
+    while ((isr_num = PLIC->MICC)) {
+        if (mach_plic_handler[isr_num] != NULL_IRQ) {
+            // call isr handler
+            mach_plic_handler[isr_num]();
+        }
+        PLIC->MICC = isr_num;
     }
-    PLIC->MICC = isr_num;
 }

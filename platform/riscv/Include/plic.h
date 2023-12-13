@@ -16,9 +16,32 @@
 #define __IO    volatile                      /*!< defines 'read / write' permissions   */
 
 
+typedef struct {
+    __IO uint32_t PRI[32];
+    uint32_t Reserved1[992];
+    __O uint32_t INT_PEND;
+    uint32_t Reserved2[1023];
+    __IO uint32_t M_INTEN;
+    uint32_t Reserved3[31];
+    __IO uint32_t U_INTEN;
+    uint32_t Reserved4[2015];
+    __O uint32_t NINT;
+    __O uint32_t NPRI;
+    uint32_t Reserved5[520190];
+    __IO uint32_t MTHR;
+    __IO uint32_t MICC;
+    uint32_t Reserved6[1022];
+    __IO uint32_t UTHR;
+    __IO uint32_t UICC;
+
+} PLIC_TypeDef;
+
+#define PLIC_BASE (0x0C000000UL)
+#define PLIC      ((volatile PLIC_TypeDef*)PLIC_BASE)
+
 enum Plic_Target {
-    Plic_Mach_Target = 0x0,
-    Plic_SuperVisor_Target
+    E_PLIC_MACHINE_TARGET = 0x0,
+    E_PLIC_USER_TARGET
 };
 #ifndef PLIC_NUM_VECTORS
     #define PLIC_NUM_VECTORS 32

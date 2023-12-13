@@ -63,7 +63,6 @@ void trap_handler(void) {
     uint_xlen_t mepc = csr_read_mepc();
     uint_xlen_t mie = csr_read_mie();
 
-    
 
     if ((mcause & MCAUSE_INTERRUPT_BIT_MASK) == 0) {
         // handle exception

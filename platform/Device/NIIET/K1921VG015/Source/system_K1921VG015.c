@@ -189,7 +189,7 @@ void SystemInit(void)
 {
   riscv_irq_init();
   PLIC_Init();
-  PLIC_SetThreshold (Plic_Mach_Target, 0);
+  PLIC_SetThreshold (E_PLIC_MACHINE_TARGET, 0);
   clk_init();
   SystemCoreClockUpdate();
 }
